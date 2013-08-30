@@ -2,6 +2,9 @@ package main;
 
 import java.awt.EventQueue;
 
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLProfile;
+import javax.media.opengl.awt.GLJPanel;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
@@ -89,8 +92,12 @@ public class Main {
 		JButton btnNewButton = new JButton("New button");
 		rightPanel.add(btnNewButton);
 		
-		//Canvas canvas = new Canvas();
-		JPanel canvas = new JPanel();
+		// Initialization OpenGl
+		GLProfile glp = GLProfile.getDefault();
+		GLCapabilities caps = new GLCapabilities(glp);
+		GLJPanel canvas = new GLJPanel(caps);
+		// end of initialization OpenGL
+		
 		mainWindow.getContentPane().add(canvas, BorderLayout.CENTER);
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
