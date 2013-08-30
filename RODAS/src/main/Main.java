@@ -92,7 +92,6 @@ public class Main {
 		//Canvas canvas = new Canvas();
 		JPanel canvas = new JPanel();
 		mainWindow.getContentPane().add(canvas, BorderLayout.CENTER);
-		
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent arg0) {
