@@ -26,8 +26,8 @@ public class Main {
 
 	private JFrame mainWindow;
 	private JTextField textField;
-	private String xCursorPosition;
-	private String yCursorPosition;
+	private Integer xCursorPosition;
+	private Integer yCursorPosition;
 
 	/**
 	 * Launch the application.
@@ -96,9 +96,9 @@ public class Main {
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent arg0) {
-				xCursorPosition = Integer.toString(MouseInfo.getPointerInfo().getLocation().x);
-				yCursorPosition = Integer.toString(MouseInfo.getPointerInfo().getLocation().y);
-				textField.setText("x = " + xCursorPosition + " ; y = " + yCursorPosition);
+				xCursorPosition = MouseInfo.getPointerInfo().getLocation().x;
+				yCursorPosition = MouseInfo.getPointerInfo().getLocation().y;
+				textField.setText("Cursor position: x = " + Integer.toString(xCursorPosition) + " ; y = " + Integer.toString(yCursorPosition));
 			}
 		});
 		
