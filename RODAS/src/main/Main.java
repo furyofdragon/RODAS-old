@@ -22,6 +22,8 @@ import java.awt.FlowLayout;
 
 import javax.swing.JMenuItem;
 
+import com.jogamp.opengl.util.Animator;
+
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 
@@ -107,7 +109,11 @@ public class Main {
 				textField.setText("Cursor position: x = " + Integer.toString(xCursorPosition) + " ; y = " + Integer.toString(yCursorPosition));
 			}
 		});
+		canvas.addGLEventListener(new SimpleScene());
 		
+		Animator animator = new Animator(canvas);
+		//canvas.setAnimator(animator);
+		animator.start();
 		
 		JPanel bottomPanel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) bottomPanel.getLayout();
