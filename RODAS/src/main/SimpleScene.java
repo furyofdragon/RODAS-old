@@ -10,6 +10,10 @@ public class SimpleScene implements GLEventListener {
 	private double theta = 0;
 	private double s = 0;
 	private double c = 0;
+	
+	private double r = 1;
+	private double h = 0.5;
+	private double alfa = 0;
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
@@ -47,6 +51,7 @@ public class SimpleScene implements GLEventListener {
 		theta += 0.01;
 		s = Math.sin(theta);
 		c = Math.cos(theta);
+		alfa = alfa + 0.01;
 	}
 	
 	private void render(GLAutoDrawable drawable) {
@@ -68,22 +73,38 @@ public class SimpleScene implements GLEventListener {
 		
 		// draw a triangle filling the window
 		
+		
+		
 		gl.glBegin(GL.GL_TRIANGLES);
 			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-c, -c);
 			gl.glColor3f(0, 1, 0);		gl.glVertex2d(0, c);
 			gl.glColor3f(0, 0, 1);		gl.glVertex2d(s, -s);
 		gl.glEnd();
 		
+		
+		/*
 		gl.glBegin(GL.GL_TRIANGLES);
 			gl.glColor3f(1, 0, 1);		gl.glVertex2d(c, c);
 			gl.glColor3f(0, 1, 1);		gl.glVertex2d(0, -c);
 			gl.glColor3f(1, 1, 0);		gl.glVertex2d(-s, s);
 		gl.glEnd();
+		*/
 		
+		/*
 		gl.glBegin(GL.GL_LINES);
-			gl.glColor3f(1, 1, 1);		gl.glVertex2d(0, c);
-			gl.glColor3f(1, 1, 1);		gl.glVertex2d(0, -c);
+			gl.glColor3f(1, 1, 1);		gl.glVertex2d(-s, c);
+			gl.glColor3f(1, 1, 1);		gl.glVertex2d(s, -c);
 		gl.glEnd();
+		*/
+		
+		/*
+		gl.glBegin(GL.GL_TRIANGLES);
+			gl.glColor3f(1, 0, 1);		gl.glVertex3d(-r*Math.cos(alfa), 0, -r*Math.sin(alfa));
+			gl.glColor3f(0, 1, 0);		gl.glVertex3d( r*Math.cos(alfa), 0,  r*Math.sin(alfa));
+			gl.glColor3f(1, 1, 1);		gl.glVertex3d(0, h, 0);
+		gl.glEnd();
+		*/
+		
 	}
 
 }
