@@ -54,14 +54,35 @@ public class SimpleScene implements GLEventListener {
 		
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 		
+		/* colors
+		glColor3f(0.0, 0.0, 0.0);           black
+		glColor3f(1.0, 0.0, 0.0);           red
+		glColor3f(0.0, 1.0, 0.0);           green
+		glColor3f(1.0, 1.0, 0.0);           yellow
+		glColor3f(0.0, 0.0, 1.0);           blue
+		glColor3f(1.0, 0.0, 1.0);           magenta
+		glColor3f(0.0, 1.0, 1.0);           cyan
+		glColor3f(1.0, 1.0, 1.0);           white
+		 * 
+		 */
+		
 		// draw a triangle filling the window
+		
 		gl.glBegin(GL.GL_TRIANGLES);
-		gl.glColor3f(1, 0, 0);
-		gl.glVertex2d(-c, -c);
-		gl.glColor3f(0, 1, 0);
-		gl.glVertex2d(0, c);
-		gl.glColor3f(0, 0, 1);
-		gl.glVertex2d(s, -s);
+			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-c, -c);
+			gl.glColor3f(0, 1, 0);		gl.glVertex2d(0, c);
+			gl.glColor3f(0, 0, 1);		gl.glVertex2d(s, -s);
+		gl.glEnd();
+		
+		gl.glBegin(GL.GL_TRIANGLES);
+			gl.glColor3f(1, 0, 1);		gl.glVertex2d(c, c);
+			gl.glColor3f(0, 1, 1);		gl.glVertex2d(0, -c);
+			gl.glColor3f(1, 1, 0);		gl.glVertex2d(-s, s);
+		gl.glEnd();
+		
+		gl.glBegin(GL.GL_LINES);
+			gl.glColor3f(1, 1, 1);		gl.glVertex2d(0, c);
+			gl.glColor3f(1, 1, 1);		gl.glVertex2d(0, -c);
 		gl.glEnd();
 	}
 
