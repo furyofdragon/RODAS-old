@@ -13,6 +13,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.MouseInfo;
 
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
@@ -21,11 +22,13 @@ import javax.swing.JTextField;
 import java.awt.FlowLayout;
 
 import javax.swing.JMenuItem;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.jogamp.opengl.util.Animator;
 
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 
 public class Main {
 
@@ -74,6 +77,26 @@ public class Main {
 		menuBar.add(menuFile);
 		
 		JMenuItem menufileOpen = new JMenuItem("Open...");
+		menufileOpen.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				JFileChooser fileopen = new JFileChooser();
+				//fileopen.addChoosableFileFilter(new FileNameExtensionFilter("RODAS model (*.rfm)", "rfm"));
+				fileopen.setFileFilter(new FileNameExtensionFilter("RODAS model (*.rfm)", "rfm"));
+				//fileopen.showDialog(null, "Open file");
+				int rOpen = fileopen.showOpenDialog(mainWindow);
+				switch (rOpen) {
+					case JFileChooser.APPROVE_OPTION :
+						String inFile = fileopen.getSelectedFile().getPath();
+						ReadSource.ReadDataSource(inFile);
+						break;
+					case JFileChooser.CANCEL_OPTION :
+						break;
+					case JFileChooser.ERROR_OPTION :
+						break;
+				}
+			}
+		});
 		menuFile.add(menufileOpen);
 		
 		JMenuItem menuFileSave = new JMenuItem("Save");
@@ -122,8 +145,8 @@ public class Main {
 		
 		textField = new JTextField();
 		textField.setEditable(false);
-		bottomPanel.add(textField);
 		textField.setColumns(20);
+		bottomPanel.add(textField);
 		
 		JSeparator separator = new JSeparator();
 		bottomPanel.add(separator);
