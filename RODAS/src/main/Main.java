@@ -82,7 +82,7 @@ public class Main {
 			public void mousePressed(MouseEvent arg0) {
 				JFileChooser fileopen = new JFileChooser();
 				//fileopen.addChoosableFileFilter(new FileNameExtensionFilter("RODAS model (*.rfm)", "rfm"));
-				fileopen.setFileFilter(new FileNameExtensionFilter("RODAS model (*.rfm)", "rfm"));
+				fileopen.setFileFilter(new FileNameExtensionFilter("RODAS model (*.rm)", "rm"));
 				//fileopen.showDialog(null, "Open file");
 				int rOpen = fileopen.showOpenDialog(mainWindow);
 				switch (rOpen) {
