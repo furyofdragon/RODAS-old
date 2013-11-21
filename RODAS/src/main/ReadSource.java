@@ -9,34 +9,24 @@ import java.util.StringTokenizer;
 
 public class ReadSource {
 	
-	static float thetald[][];
-	static int N = 0;
+	static int N = 0;			// number of lines in input file
+	static int np;				// number of points
+	static int nl;				// number of lines
+	
+	static float points[][];	// Array of points: id, x, y, z
+	static float lines[][];		// Array of lines: id, start_point_id, end_point_id
 	
 	static void ReadDataSource(String strFileName) {
 		
 		String line = null;
-		String tableSeparator = "--------------------------------------------------------------------------------------------------------";
-
-		int nn = 0;
-		int flag = 1;
-		ArrayList<String> al = new ArrayList<String>();
+		//String tableSeparator = "----------";
 		
+		ArrayList<String> al = new ArrayList<String>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(strFileName));
 			while ((line = br.readLine()) != null) {
-				nn = nn + 1;
-				if (line.equals(tableSeparator)) {
-					flag = flag*(-1);
-					if (flag < 0) {		// table start
-						//count lines
-						while (!(line = br.readLine()).equals(tableSeparator)) {
-							nn = nn + 1;
-							N = N+1;
-							al.add(line);
-						}
-						nn = nn + 1;
-					}
-				}
+				N = N+1;
+				al.add(line);
 			}
 			br.close();
 		} catch (FileNotFoundException e) {
@@ -47,29 +37,47 @@ public class ReadSource {
 			e.printStackTrace();
 		}
 		
-		thetald = new float[N][3];
-		for (int i = 0; i < N; i++) {
-			StringTokenizer token = new StringTokenizer(al.get(i), "|");
-			//token.nextToken().trim();
-			thetald[i][0] = Float.parseFloat(token.nextToken().trim());
-			token.nextToken().trim();
-			token.nextToken().trim();
-			token.nextToken().trim();
-			token.nextToken().trim();
-			thetald[i][1] = Float.parseFloat(token.nextToken().trim());
-			thetald[i][2] = Float.parseFloat(token.nextToken().trim());
+		
+		np = Integer.parseInt(new StringTokenizer(al.get(0), " ").nextToken().trim());
+		
+		points = new float[np][4];
+		for (int i = 0; i < np; i++) {
+			StringTokenizer token = new StringTokenizer(al.get(i), " ");
+			points[i][0] = Integer.parseInt(token.nextToken().trim());
+			points[i][1] = Float.parseFloat(token.nextToken().trim());
+			points[i][2] = Float.parseFloat(token.nextToken().trim());
+			points[i][3] = Float.parseFloat(token.nextToken().trim());
+			
+		}
+		
+		
+		nl = Integer.parseInt(new StringTokenizer(al.get(np), " ").nextToken().trim());
+		
+		lines = new float[nl][3];
+		for (int i = 0; i < nl; i++) {
+			StringTokenizer token = new StringTokenizer(al.get(i), " ");
+			lines[i][0] = Integer.parseInt(token.nextToken().trim());
+			lines[i][1] = Integer.parseInt(token.nextToken().trim());
+			lines[i][2] = Integer.parseInt(token.nextToken().trim());
 			
 		}
 		
 	}
 	
-	static int getArrayDimension() {
-		return N;
+	static int getPointsArrayDimension() {
+		return points.length;
 	}
 	
-	static float[][] getDataArray() {
-		return thetald;
+	static float[][] getPointsDataArray() {
+		return points;
 	}
 	
+	static int getLinesArrayDimension() {
+		return lines.length;
+	}
+	
+	static float[][] getlinesDataArray() {
+		return lines;
+	}
 
 }
