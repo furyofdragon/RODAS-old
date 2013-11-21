@@ -19,7 +19,6 @@ public class ReadSource {
 	static void ReadDataSource(String strFileName) {
 		
 		String line = null;
-		//String tableSeparator = "----------";
 		
 		ArrayList<String> al = new ArrayList<String>();
 		try {
@@ -36,7 +35,6 @@ public class ReadSource {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		
 		np = Integer.parseInt(new StringTokenizer(al.get(0), " ").nextToken().trim());
 		
