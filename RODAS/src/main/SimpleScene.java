@@ -14,6 +14,10 @@ public class SimpleScene implements GLEventListener {
 	private double r = 1;
 	private double h = 0.5;
 	private double alfa = 0;
+	
+	private float lines[][]  = ReadSource.getLinesDataArray();
+	private float points[][] = ReadSource.getPointsDataArray();
+	private int   nlines     = ReadSource.getLinesDataArray().length;
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
@@ -48,10 +52,12 @@ public class SimpleScene implements GLEventListener {
 	
 	private void update() {
 		// nothing to update yet
+		
 		theta += 0.01;
 		s = Math.sin(theta);
 		c = Math.cos(theta);
 		alfa = alfa + 0.01;
+		
 	}
 	
 	private void render(GLAutoDrawable drawable) {
@@ -74,18 +80,30 @@ public class SimpleScene implements GLEventListener {
 		// draw a triangle filling the window
 		
 		
-		/**
+		
 		gl.glBegin(GL.GL_TRIANGLES);
 			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-c, -c);
 			gl.glColor3f(0, 1, 0);		gl.glVertex2d(0, c);
 			gl.glColor3f(0, 0, 1);		gl.glVertex2d(s, -s);
 		gl.glEnd();
-		*/
-		float lines[][] = ReadSource.getlinesDataArray();
-		for (int i = 0; i < ReadSource.getLinesArrayDimension(); i++) {
-		gl.glBegin(GL.GL_LINES);
-			gl.glColor3f(1, 1, 1);		gl.glVertex3d(lines[i][0], lines[i][1], lines[i][2]);
-		gl.glEnd();
+		
+		
+		
+		
+		for (int i = 0; i < nlines-1; i++) {
+			float x1 = points[(int) lines[i][1]][1];
+			float y1 = points[(int) lines[i][1]][2];
+			float z1 = points[(int) lines[i][1]][3];
+			
+			float x2 = points[(int) lines[i+1][1]][1];
+			float y2 = points[(int) lines[i+1][1]][2];
+			float z2 = points[(int) lines[i+1][1]][3];
+			
+			gl.glBegin(GL.GL_LINES);
+				gl.glColor3f(1, 1, 1);
+				gl.glVertex3d(x1, y1, z1);
+				gl.glVertex3d(x2, y2, z2);
+			gl.glEnd();
 		}
 		
 		
@@ -97,12 +115,12 @@ public class SimpleScene implements GLEventListener {
 		gl.glEnd();
 		*/
 		
-		/*
+		
 		gl.glBegin(GL.GL_LINES);
 			gl.glColor3f(1, 1, 1);		gl.glVertex2d(-s, c);
 			gl.glColor3f(1, 1, 1);		gl.glVertex2d(s, -c);
 		gl.glEnd();
-		*/
+		
 		
 		/*
 		gl.glBegin(GL.GL_TRIANGLES);

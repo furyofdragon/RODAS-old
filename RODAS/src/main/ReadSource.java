@@ -74,7 +74,7 @@ public class ReadSource {
 		return lines.length;
 	}
 	
-	static float[][] getlinesDataArray() {
+	static float[][] getLinesDataArray() {
 		return lines;
 	}
 
