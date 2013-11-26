@@ -14,10 +14,6 @@ public class SimpleScene implements GLEventListener {
 	private double r = 1;
 	private double h = 0.5;
 	private double alfa = 0;
-	
-	private float lines[][]  = ReadSource.getLinesDataArray();
-	private float points[][] = ReadSource.getPointsDataArray();
-	private int   nlines     = ReadSource.getLinesDataArray().length;
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
@@ -89,7 +85,7 @@ public class SimpleScene implements GLEventListener {
 		
 		
 		
-		
+		/*
 		for (int i = 0; i < nlines-1; i++) {
 			float x1 = points[(int) lines[i][1]][1];
 			float y1 = points[(int) lines[i][1]][2];
@@ -105,6 +101,7 @@ public class SimpleScene implements GLEventListener {
 				gl.glVertex3d(x2, y2, z2);
 			gl.glEnd();
 		}
+		*/
 		
 		
 		/*
@@ -119,6 +116,12 @@ public class SimpleScene implements GLEventListener {
 		gl.glBegin(GL.GL_LINES);
 			gl.glColor3f(1, 1, 1);		gl.glVertex2d(-s, c);
 			gl.glColor3f(1, 1, 1);		gl.glVertex2d(s, -c);
+		gl.glEnd();
+		
+		
+		gl.glBegin(GL.GL_POINTS);
+			gl.glColor3f(1, 1, 1);
+			gl.glVertex3d(s, s, s);
 		gl.glEnd();
 		
 		

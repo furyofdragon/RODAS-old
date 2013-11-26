@@ -2,9 +2,16 @@ package main;
 
 public class Line {
 	
+	public Line(int id, int p1id, int p2id) {
+		super();
+		this.id   = id;
+		this.p1id = p1id;
+		this.p2id = p2id;
+	}
+	
 	int id;
-	Point point1;
-	Point point2;
+	int p1id;
+	int p2id;
 	
 	public int getId() {
 		return id;
@@ -14,20 +21,20 @@ public class Line {
 		this.id = id;
 	}
 	
-	public Point getPoint1() {
-		return point1;
+	public int getP1id() {
+		return p1id;
 	}
 	
-	public void setPoint1(Point point1) {
-		this.point1 = point1;
+	public void setP1id(int p1id) {
+		this.p1id = p1id;
 	}
 	
-	public Point getPoint2() {
-		return point2;
+	public int getP2id() {
+		return p2id;
 	}
 	
-	public void setPoint2(Point point2) {
-		this.point2 = point2;
+	public void setP2id(int p2id) {
+		this.p2id = p2id;
 	}
 
 }

@@ -2,6 +2,14 @@ package main;
 
 public class Point {
 
+	public Point(int id, float x, float y, float z) {
+		super();
+		this.id = id;
+		this.x  = x;
+		this.y  = y;
+		this.z  = z;
+	}
+
 	int   id;
 	float x;
 	float y;
