@@ -3,6 +3,7 @@ package main;
 import java.awt.EventQueue;
 
 import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLDrawableFactory;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLJPanel;
 import javax.swing.JFrame;
@@ -29,6 +30,9 @@ import com.jogamp.opengl.util.Animator;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
 
 public class Main {
 
@@ -77,6 +81,7 @@ public class Main {
 		menuBar.add(menuFile);
 		
 		JMenuItem menufileOpen = new JMenuItem("Open...");
+		menufileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		menufileOpen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
@@ -100,6 +105,7 @@ public class Main {
 		menuFile.add(menufileOpen);
 		
 		JMenuItem menuFileSave = new JMenuItem("Save");
+		menuFileSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		menuFile.add(menuFileSave);
 		
 		JMenuItem menuFileSaveAs = new JMenuItem("Save as...");
