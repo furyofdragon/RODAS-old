@@ -46,10 +46,10 @@ public class ReadSource {
 		}
 		
 		
-		nl = Integer.parseInt(new StringTokenizer(al.get(np), " ").nextToken().trim());
+		nl = Integer.parseInt(new StringTokenizer(al.get(np+1), " ").nextToken().trim());
 		Vector<Line> vLines = new Vector<Line>();
 		for (int i = 0; i < nl; i++) {
-			StringTokenizer token = new StringTokenizer(al.get(i+1+np), " ");
+			StringTokenizer token = new StringTokenizer(al.get(i+1+np+1), " ");
 			int id = Integer.parseInt(token.nextToken().trim());
 			int p1 = Integer.parseInt(token.nextToken().trim());
 			int p2 = Integer.parseInt(token.nextToken().trim());
