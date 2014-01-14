@@ -137,7 +137,8 @@ public class Main {
 				textField.setText("Cursor position: x = " + Integer.toString(xCursorPosition) + " ; y = " + Integer.toString(yCursorPosition));
 			}
 		});
-		canvas.addGLEventListener(new SimpleScene());
+		//canvas.addGLEventListener(new SimpleScene());
+		canvas.addGLEventListener(new GLScene());
 		
 		Animator animator = new Animator(canvas);
 		//canvas.setAnimator(animator);
