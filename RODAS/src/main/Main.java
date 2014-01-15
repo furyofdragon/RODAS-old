@@ -32,6 +32,8 @@ import java.awt.event.MouseAdapter;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Main {
 
@@ -68,6 +70,7 @@ public class Main {
 	 */
 	private void initialize() {
 		mainWindow = new JFrame();
+
 		mainWindow.setTitle("RODAS");
 		mainWindow.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		mainWindow.setMinimumSize(new Dimension(640, 480));
@@ -140,7 +143,7 @@ public class Main {
 		//canvas.addGLEventListener(new SimpleScene());
 		canvas.addGLEventListener(new GLScene());
 		
-		Animator animator = new Animator(canvas);
+		final Animator animator = new Animator(canvas);
 		//canvas.setAnimator(animator);
 		animator.start();
 		
@@ -156,6 +159,21 @@ public class Main {
 		
 		JSeparator separator = new JSeparator();
 		bottomPanel.add(separator);
+		
+		mainWindow.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				// Use a dedicate thread to run the stop() to ensure that the
+				// animator stops before program exits.
+				new Thread() {
+					@Override
+					public void run() {
+						if (animator.isStarted()) animator.stop();
+						System.exit(0);
+					}
+				}.start();
+			}
+		});
 	}
 
 }
