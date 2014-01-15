@@ -80,6 +80,18 @@ public class GLScene implements GLEventListener {
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	// clear color and depth buffers
 		gl.glLoadIdentity();  // reset the model-view matrix
 		
+		/* colors
+		glColor3f(0.0, 0.0, 0.0);           black
+		glColor3f(1.0, 0.0, 0.0);           red
+		glColor3f(0.0, 1.0, 0.0);           green
+		glColor3f(1.0, 1.0, 0.0);           yellow
+		glColor3f(0.0, 0.0, 1.0);           blue
+		glColor3f(1.0, 0.0, 1.0);           magenta
+		glColor3f(0.0, 1.0, 1.0);           cyan
+		glColor3f(1.0, 1.0, 1.0);           white
+		 * 
+		 */
+		
 		
 		// ----- OpenGL rendering code here
 		
