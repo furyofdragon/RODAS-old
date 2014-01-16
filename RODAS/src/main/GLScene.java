@@ -105,6 +105,18 @@ public class GLScene implements GLEventListener {
 		
 		
 		
+		/*
+		for (int i = 1; ; i++) {
+			ReadSource.getvlines();
+		}
+				
+		
+		gl.glBegin(GL.GL_LINES);
+			gl.glColor3f(1, 1, 1);		gl.glVertex3f(arg0, arg1, arg2);
+			gl.glColor3f(1, 1, 1);		gl.glVertex3f(arg0, arg1, arg2);
+		gl.glEnd();
+		*/
+		
 	}
 
 }

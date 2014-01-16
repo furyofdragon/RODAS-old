@@ -14,6 +14,9 @@ public class ReadSource {
 	static int np;				// number of points
 	static int nl;				// number of lines
 	
+	static Vector<Point> vPoints;
+	static Vector<Line> vLines;
+	
 	static void ReadDataSource(String strFileName) {
 		
 		String line = null;
@@ -35,7 +38,7 @@ public class ReadSource {
 		}
 		
 		np = Integer.parseInt(new StringTokenizer(al.get(0), " ").nextToken().trim());
-		Vector<Point> vPoints = new Vector<Point>();
+		vPoints = new Vector<Point>();
 		for (int i = 0; i < np; i++) {
 			StringTokenizer token = new StringTokenizer(al.get(i+1), " ");
 			int id = Integer.parseInt(token.nextToken().trim());
@@ -47,7 +50,7 @@ public class ReadSource {
 		
 		
 		nl = Integer.parseInt(new StringTokenizer(al.get(np+1), " ").nextToken().trim());
-		Vector<Line> vLines = new Vector<Line>();
+		vLines = new Vector<Line>();
 		for (int i = 0; i < nl; i++) {
 			StringTokenizer token = new StringTokenizer(al.get(i+1+np+1), " ");
 			int id = Integer.parseInt(token.nextToken().trim());
@@ -57,5 +60,12 @@ public class ReadSource {
 		}
 		
 	}
-
+	
+	static public Vector<Point> getvPoints () {
+		return vPoints;
+	}
+	
+	static public Vector<Line> getvlines () {
+		return vLines;
+	}
 }
