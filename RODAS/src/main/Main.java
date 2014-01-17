@@ -15,11 +15,13 @@ import java.awt.MouseInfo;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.FlowLayout;
@@ -37,10 +39,11 @@ import javax.swing.KeyStroke;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import javax.swing.ButtonGroup;
 
 public class Main {
 
@@ -48,10 +51,7 @@ public class Main {
 	private JTextField textField;
 	private Integer xCursorPosition;
 	private Integer yCursorPosition;
-	
-	// Specify the look and feel to use by defining the LOOKANDFEEL constant
-	// Valid values are: null (use the default), "Metal", "System", "Motif", and "GTK"
-	static String lookAndFeel = "System";
+	private final ButtonGroup lfButtonGroup = new ButtonGroup();
 
 	/**
 	 * Launch the application.
@@ -73,8 +73,6 @@ public class Main {
 	 * Create the application.
 	 */
 	public Main() {
-		//Set the look and feel
-		initLookAndFeel();
 		initialize();
 	}
 
@@ -126,40 +124,45 @@ public class Main {
 		JMenuItem menuFileSaveAs = new JMenuItem("Save as...");
 		menuFile.add(menuFileSaveAs);
 		
-		JMenu menuLf = new JMenu("L&F");
-		menuBar.add(menuLf);
+		JMenu menuLF = new JMenu("L&F");
+		menuBar.add(menuLF);
 		
-		JMenuItem menuLFSystem = new JMenuItem("System");
-		menuLFSystem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				lookAndFeel = "System";
-			}
-		});
-		menuLf.add(menuLFSystem);
+		final UIManager.LookAndFeelInfo[] lfinfo = UIManager.getInstalledLookAndFeels();
+		for (int i = 0; i < lfinfo.length; i++) {
+			final LookAndFeelInfo lfName = lfinfo[i];
+			JRadioButtonMenuItem lfitem = new JRadioButtonMenuItem(lfinfo[i].getName());
+			lfitem.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent e) {
+					if (e.getStateChange() == ItemEvent.SELECTED) {
+						String lookAndFeel = lfName.getClassName();
+						try {
+							UIManager.setLookAndFeel(lookAndFeel);
+						} catch (ClassNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (InstantiationException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IllegalAccessException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (UnsupportedLookAndFeelException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					};
+				}
+				
+			});
+			menuLF.add(lfitem);
+			lfButtonGroup.add(lfitem);
+			UIManager.addPropertyChangeListener(new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent arg0) {
+					SwingUtilities.updateComponentTreeUI(mainWindow);
+				}
+			});
+		}
 		
-		JMenuItem menuLFMetal = new JMenuItem("Metal");
-		menuLFMetal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				lookAndFeel = "Metal";
-			}
-		});
-		menuLf.add(menuLFMetal);
-		
-		JMenuItem menuLFMotif = new JMenuItem("Motif");
-		menuLFMotif.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				lookAndFeel = "Motif";
-			}
-		});
-		menuLf.add(menuLFMotif);
-		
-		JMenuItem menuLFGtk = new JMenuItem("GTK");
-		menuLFGtk.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				lookAndFeel = "GTK";
-			}
-		});
-		menuLf.add(menuLFGtk);
 		
 		JMenu menuHelp = new JMenu("Help");
 		menuBar.add(menuHelp);
@@ -206,86 +209,6 @@ public class Main {
 		JSeparator separator = new JSeparator();
 		bottomPanel.add(separator);
 		
-		mainWindow.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent arg0) {
-				// Use a dedicate thread to run the stop() to ensure that the
-				// animator stops before program exits.
-				new Thread() {
-					@Override
-					public void run() {
-						if (animator.isStarted()) animator.stop();
-						System.exit(0);
-					}
-				}.start();
-			}
-		});
-		
-		try {
-			UIManager.setLookAndFeel(lookAndFeel);
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		SwingUtilities.updateComponentTreeUI(mainWindow);
-		mainWindow.pack();
-	}
-	
-	
-	
-	private static void initLookAndFeel() {
-		//String THEME = "Ocean";
-		if (lookAndFeel != null) {
-			if (lookAndFeel.equals("Metal")) {
-				lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
-				// an alternative way to set the Metal L&F is to replace the previous line with:
-				// lookAndFeel = "javax.swing.plaf.metal.MetalLookAndFeel";
-			}
-			
-			else if (lookAndFeel.equals("System")) {
-				lookAndFeel = UIManager.getSystemLookAndFeelClassName();
-			} 
-			
-			else if (lookAndFeel.equals("Motif")) {
-				lookAndFeel = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-			}
-			
-			else if (lookAndFeel.equals("GTK")) {
-				lookAndFeel = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-			} 
-			
-			else {
-				System.err.println("Unexpected value of LOOKANDFEEL specified: " + lookAndFeel);
-				lookAndFeel = UIManager.getCrossPlatformLookAndFeelClassName();
-			}
-		}
-		
-		try {
-			UIManager.setLookAndFeel(lookAndFeel);
-		}
-		catch (ClassNotFoundException e) {
-			System.err.println("Couldn't find class for specified look and feel:" + lookAndFeel);
-			System.err.println("Did you include the L&F library in the class path?");
-			System.err.println("Using the default look and feel.");
-		}
-		catch (UnsupportedLookAndFeelException e) {
-			System.err.println("Can't use the specified look and feel (" + lookAndFeel + ") on this platform.");
-			System.err.println("Using the default look and feel.");
-		}
-		catch (Exception e) {
-			System.err.println("Couldn't get specified look and feel (" + lookAndFeel + "), for some reason.");
-			System.err.println("Using the default look and feel.");
-			e.printStackTrace();
-		}
 	}
 
 }
