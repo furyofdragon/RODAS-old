@@ -15,9 +15,7 @@ public class GLScene implements GLEventListener {
 	/**
 	* Called back by the animator to perform rendering.
 	*/
-	@Override
 	public void display(GLAutoDrawable drawable) {
-		// TODO Auto-generated method stub
 		update();
 		render(drawable);
 	}
@@ -25,7 +23,6 @@ public class GLScene implements GLEventListener {
 	/**
 	* Called back before the OpenGL context is destroyed. Release resource such as buffers.
 	*/
-	@Override
 	public void dispose(GLAutoDrawable drawable) {
 		// TODO Auto-generated method stub
 		
@@ -35,22 +32,17 @@ public class GLScene implements GLEventListener {
 	* Called back immediately after the OpenGL context is initialized. Can be used
 	* to perform one-time initialization. Run only once.
 	*/
-	@Override
 	public void init(GLAutoDrawable drawable) {
-		// TODO Auto-generated method stub
 		GL2 gl = drawable.getGL().getGL2();		// get the OpenGL graphics context
 		glu = new GLU();						// get GL Utilities
 		gl.setSwapInterval(1);
-		//drawable.getGL().setSwapInterval(1);
 	}
 
 	/**
 	* Call-back handler for window re-size event. Also called when the drawable is
 	* first set to visible.
 	*/
-	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-		// TODO Auto-generated method stub
 		GL2 gl = drawable.getGL().getGL2();		// get the OpenGL graphics context
 		if (height == 0) height = 1;			// prevent divide by zero
 		float aspect = (float) width / height;
@@ -67,15 +59,10 @@ public class GLScene implements GLEventListener {
 	}
 	
 	private void update() {
-		// TODO Auto-generated method stub
-		
-		
 		angle = angle + 0.1f;
-		
 	}
 	
 	private void render(GLAutoDrawable drawable) {
-		// TODO Auto-generated method stub
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	// clear color and depth buffers
 		gl.glLoadIdentity();  // reset the model-view matrix

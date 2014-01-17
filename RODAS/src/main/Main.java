@@ -96,7 +96,6 @@ public class Main {
 		JMenuItem menuFileOpen = new JMenuItem("Open...");
 		menuFileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		menuFileOpen.addMouseListener(new MouseAdapter() {
-			@Override
 			public void mousePressed(MouseEvent arg0) {
 				JFileChooser fileopen = new JFileChooser();
 				//fileopen.addChoosableFileFilter(new FileNameExtensionFilter("RODAS model (*.rfm)", "rfm"));
@@ -184,7 +183,6 @@ public class Main {
 		
 		mainWindow.getContentPane().add(canvas, BorderLayout.CENTER);
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
 			public void mouseMoved(MouseEvent arg0) {
 				xCursorPosition = MouseInfo.getPointerInfo().getLocation().x;
 				yCursorPosition = MouseInfo.getPointerInfo().getLocation().y;
