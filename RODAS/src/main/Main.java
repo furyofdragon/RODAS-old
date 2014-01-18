@@ -43,6 +43,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import javax.swing.ButtonGroup;
 
 public class Main {
@@ -155,13 +156,30 @@ public class Main {
 			});
 			menuLF.add(lfitem);
 			lfButtonGroup.add(lfitem);
-			UIManager.addPropertyChangeListener(new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent arg0) {
-					SwingUtilities.updateComponentTreeUI(mainWindow);
-				}
-			});
 		}
 		
+		UIManager.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent arg0) {
+				SwingUtilities.updateComponentTreeUI(mainWindow);
+			}
+		});
+		
+		// setup System L&F as default
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		JMenu menuHelp = new JMenu("Help");
 		menuBar.add(menuHelp);
