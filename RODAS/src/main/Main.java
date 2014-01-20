@@ -2,6 +2,7 @@ package main;
 
 import java.awt.EventQueue;
 
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLJPanel;
@@ -45,6 +46,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.ButtonGroup;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseWheelEvent;
 
 public class Main {
 
@@ -52,6 +55,8 @@ public class Main {
 	private JTextField textField;
 	private Integer xCursorPosition;
 	private Integer yCursorPosition;
+	private float deltax = 0;
+	private float deltay = 0;
 	private final ButtonGroup lfButtonGroup = new ButtonGroup();
 
 	/**
@@ -167,6 +172,7 @@ public class Main {
 		// setup System L&F as default
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			//UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -200,14 +206,39 @@ public class Main {
 		// end of initialization OpenGL
 		
 		mainWindow.getContentPane().add(canvas, BorderLayout.CENTER);
+		canvas.addGLEventListener(new GLScene());
+		canvas.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent arg0) {
+				xCursorPosition = arg0.getX();
+				yCursorPosition = arg0.getY();
+			}
+			public void mouseReleased(MouseEvent arg0) {
+				xCursorPosition = arg0.getX();
+				yCursorPosition = arg0.getY();
+			}
+		});
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent arg0) {
 				xCursorPosition = MouseInfo.getPointerInfo().getLocation().x;
 				yCursorPosition = MouseInfo.getPointerInfo().getLocation().y;
-				textField.setText("Cursor position: x = " + Integer.toString(xCursorPosition) + " ; y = " + Integer.toString(yCursorPosition));
+				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
+			}
+			
+			public void mouseDragged(MouseEvent arg0) {
+				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
+				//deltax =+ arg0.getX();
+				deltax = arg0.getX() - xCursorPosition;
+				deltay = arg0.getY() - yCursorPosition;
+				//deltay =+ arg0.getY();
+				if (SwingUtilities.isLeftMouseButton(arg0)) GLScene.setTranslate(deltax/1000f, deltay/1000f);
+				if (SwingUtilities.isRightMouseButton(arg0)) GLScene.setRotate(deltax/10f, deltay/10f);
+				
 			}
 		});
-		canvas.addGLEventListener(new GLScene());
+		canvas.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent arg0) {
+			}
+		});
 		
 		final Animator animator = new Animator(canvas);
 		animator.start();
@@ -218,8 +249,8 @@ public class Main {
 		mainWindow.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 		
 		textField = new JTextField();
+		textField.setColumns(30);
 		textField.setEditable(false);
-		textField.setColumns(20);
 		bottomPanel.add(textField);
 		
 		JSeparator separator = new JSeparator();

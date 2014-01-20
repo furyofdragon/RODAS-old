@@ -11,6 +11,10 @@ public class GLScene implements GLEventListener {
 	private GLU glu;  // for the GL Utility
 	
 	private float angle = 1;
+	private static float deltax;
+	private static float deltay;
+	private static float rotx;
+	private static float roty;
 
 	/**
 	* Called back by the animator to perform rendering.
@@ -52,7 +56,7 @@ public class GLScene implements GLEventListener {
 		
 		// Setup perspective projection, with aspect ratio matches viewport
 		gl.glLoadIdentity();							// reset projection matrix
-		glu.gluPerspective(45.0, aspect, 0.1, 100.0); 	// fovy, aspect, zNear, zFar
+		glu.gluPerspective(45.0, aspect, 60, 100.0); 	// fovy, aspect, zNear, zFar
 		
 		// Enable the model-view transform
 		gl.glLoadIdentity(); // reset
@@ -83,6 +87,9 @@ public class GLScene implements GLEventListener {
 		// ----- OpenGL rendering code here
 		
 		gl.glRotatef(angle, 1, 1, 1);
+		gl.glTranslatef(deltax, deltay, 0);
+		gl.glRotatef(rotx, 1, 0, 0);
+		gl.glRotatef(roty, 0, 1, 0);
 		
 		gl.glBegin(GL.GL_TRIANGLES);
 			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-1, -1);
@@ -90,20 +97,16 @@ public class GLScene implements GLEventListener {
 			gl.glColor3f(0, 0, 1);		gl.glVertex2d(0, 1);
 		gl.glEnd();
 		
-		
-		
-		/*
-		for (int i = 1; ; i++) {
-			ReadSource.getvlines();
-		}
-				
-		
-		gl.glBegin(GL.GL_LINES);
-			gl.glColor3f(1, 1, 1);		gl.glVertex3f(arg0, arg1, arg2);
-			gl.glColor3f(1, 1, 1);		gl.glVertex3f(arg0, arg1, arg2);
-		gl.glEnd();
-		*/
-		
+	}
+	
+	static void setTranslate(float deltax, float deltay) {
+		GLScene.deltax = deltax;
+		GLScene.deltay = deltay;
+	}
+	
+	static void setRotate(float rotx, float roty) {
+		GLScene.rotx = rotx;
+		GLScene.roty = roty;
 	}
 
 }
