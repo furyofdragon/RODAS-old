@@ -2,7 +2,6 @@ package main;
 
 import java.awt.EventQueue;
 
-import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLJPanel;
@@ -12,7 +11,6 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.MouseInfo;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
@@ -46,8 +44,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.ButtonGroup;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.MouseWheelEvent;
+
 
 public class Main {
 
@@ -55,9 +52,11 @@ public class Main {
 	private JTextField textField;
 	private Integer xCursorPosition;
 	private Integer yCursorPosition;
-	private float deltax = 0;
-	private float deltay = 0;
 	private final ButtonGroup lfButtonGroup = new ButtonGroup();
+	private float deltax;
+	private float deltay;
+	private float rotx;
+	private float roty;
 
 	/**
 	 * Launch the application.
@@ -202,8 +201,7 @@ public class Main {
 		// Initialization OpenGl
 		GLProfile glp = GLProfile.getDefault();
 		GLCapabilities caps = new GLCapabilities(glp);
-		GLJPanel canvas = new GLJPanel(caps);
-		// end of initialization OpenGL
+		final GLJPanel canvas = new GLJPanel(caps);
 		
 		mainWindow.getContentPane().add(canvas, BorderLayout.CENTER);
 		canvas.addGLEventListener(new GLScene());
@@ -211,37 +209,33 @@ public class Main {
 			public void mousePressed(MouseEvent arg0) {
 				xCursorPosition = arg0.getX();
 				yCursorPosition = arg0.getY();
-			}
-			public void mouseReleased(MouseEvent arg0) {
-				xCursorPosition = arg0.getX();
-				yCursorPosition = arg0.getY();
+				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
 			}
 		});
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
 			public void mouseMoved(MouseEvent arg0) {
-				xCursorPosition = MouseInfo.getPointerInfo().getLocation().x;
-				yCursorPosition = MouseInfo.getPointerInfo().getLocation().y;
 				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
 			}
 			
 			public void mouseDragged(MouseEvent arg0) {
 				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
-				//deltax =+ arg0.getX();
-				deltax = arg0.getX() - xCursorPosition;
-				deltay = arg0.getY() - yCursorPosition;
-				//deltay =+ arg0.getY();
-				if (SwingUtilities.isLeftMouseButton(arg0)) GLScene.setTranslate(deltax/1000f, deltay/1000f);
-				if (SwingUtilities.isRightMouseButton(arg0)) GLScene.setRotate(deltax/10f, deltay/10f);
+				int xmove = arg0.getX() - xCursorPosition;
+				int ymove = arg0.getY() - yCursorPosition;
+				int xsize = canvas.getWidth();
+				int ysize = canvas.getHeight();
+				deltax = deltax + (float) xmove / (float) xsize;
+				deltay = deltay + (float) ymove / (float) ysize;
+				rotx = rotx + (float) ymove / (float) ysize * 10f;
+				roty = roty + (float) xmove / (float) xsize * 10f;
+				if (SwingUtilities.isLeftMouseButton(arg0)) GLScene.setTranslate(deltax, deltay);
+				if (SwingUtilities.isRightMouseButton(arg0)) GLScene.setRotate(rotx, roty);
 				
-			}
-		});
-		canvas.addMouseWheelListener(new MouseWheelListener() {
-			public void mouseWheelMoved(MouseWheelEvent arg0) {
 			}
 		});
 		
 		final Animator animator = new Animator(canvas);
 		animator.start();
+		// end of initialization OpenGL
 		
 		JPanel bottomPanel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) bottomPanel.getLayout();

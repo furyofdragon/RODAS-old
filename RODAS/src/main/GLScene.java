@@ -10,7 +10,6 @@ public class GLScene implements GLEventListener {
 	
 	private GLU glu;  // for the GL Utility
 	
-	private float angle = 1;
 	private static float deltax;
 	private static float deltay;
 	private static float rotx;
@@ -20,12 +19,8 @@ public class GLScene implements GLEventListener {
 	* Called back by the animator to perform rendering.
 	*/
 	public void display(GLAutoDrawable drawable) {
-		angle = angle + 0.1f;
-		
-		
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	// clear color and depth buffers
-		gl.glLoadIdentity();  // reset the model-view matrix
 		
 		/* colors
 		glColor3f(0.0, 0.0, 0.0);           black
@@ -52,8 +47,11 @@ public class GLScene implements GLEventListener {
 		//(0, 0, 0): Where we are looking at ("at"): Directly at the center of the coordinate system.
 		//(0, 1, 0): Where our head points into the sky ("up"): Directly up, along the Y coordinate
 		//(remember that Y is counted as if on a graph, not like in an image manipulation program).
-		glu.gluLookAt(-deltax, -deltay, 1, 0, 0, 0, 0, 0, 1);
 		
+		gl.glLoadIdentity();  // reset the model-view matrix
+		gl.glRotatef(rotx, 1, 0, 0);
+		gl.glRotatef(roty, 0, 1, 0);
+		gl.glTranslatef(deltax, deltay, 0);
 		
 		gl.glBegin(GL.GL_TRIANGLES);
 			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-1, -1);
@@ -61,13 +59,6 @@ public class GLScene implements GLEventListener {
 			gl.glColor3f(0, 0, 1);		gl.glVertex2d(0, 1);
 		gl.glEnd();
 		
-		
-		/*
-		gl.glBegin(gl.GL_LINES);
-			gl.glVertex3d(-1, 0, 0);
-			gl.glVertex3d(1, 0, 0);
-		gl.glEnd();
-		*/
 		
 		
 	}
@@ -97,17 +88,17 @@ public class GLScene implements GLEventListener {
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		GL2 gl = drawable.getGL().getGL2();		// get the OpenGL graphics context
 		if (height == 0) height = 1;			// prevent divide by zero
-		float aspect = (float) width / height;
+		//float aspect = (float) width / height;
 		
 		// Set the view port (display area) to cover the entire window
-		gl.glViewport(0, 0, width, height);
+		//gl.glViewport(0, 0, width, height);
 		
 		// Setup perspective projection, with aspect ratio matches viewport
-		gl.glLoadIdentity();							// reset projection matrix
-		glu.gluPerspective(45.0, aspect, 0.1, 100.0); 	// fovy, aspect, zNear, zFar
+		//gl.glLoadIdentity();							// reset projection matrix
+		//glu.gluPerspective(45.0, aspect, 0.1, 100.0); 	// fovy, aspect, zNear, zFar
 		
 		// Enable the model-view transform
-		gl.glLoadIdentity(); // reset
+		//gl.glLoadIdentity(); // reset
 	}
 	
 	
