@@ -20,8 +20,56 @@ public class GLScene implements GLEventListener {
 	* Called back by the animator to perform rendering.
 	*/
 	public void display(GLAutoDrawable drawable) {
-		update();
-		render(drawable);
+		angle = angle + 0.1f;
+		
+		
+		GL2 gl = drawable.getGL().getGL2();
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	// clear color and depth buffers
+		gl.glLoadIdentity();  // reset the model-view matrix
+		
+		/* colors
+		glColor3f(0.0, 0.0, 0.0);           black
+		glColor3f(1.0, 0.0, 0.0);           red
+		glColor3f(0.0, 1.0, 0.0);           green
+		glColor3f(1.0, 1.0, 0.0);           yellow
+		glColor3f(0.0, 0.0, 1.0);           blue
+		glColor3f(1.0, 0.0, 1.0);           magenta
+		glColor3f(0.0, 1.0, 1.0);           cyan
+		glColor3f(1.0, 1.0, 1.0);           white
+		 * 
+		 */
+		
+		
+		// ----- OpenGL rendering code here
+		
+		//gl.glRotatef(angle, 1, 1, 1);
+		//gl.glTranslatef(deltax, deltay, 0);
+		//gl.glRotatef(rotx, 1, 0, 0);
+		//gl.glRotatef(roty, 0, 1, 0);
+		
+		//the gluLookAt() method, which takes three 3D coordinates:
+		//(0, 0, distance): Where we are standing ("eye")
+		//(0, 0, 0): Where we are looking at ("at"): Directly at the center of the coordinate system.
+		//(0, 1, 0): Where our head points into the sky ("up"): Directly up, along the Y coordinate
+		//(remember that Y is counted as if on a graph, not like in an image manipulation program).
+		glu.gluLookAt(-deltax, -deltay, 1, 0, 0, 0, 0, 0, 1);
+		
+		
+		gl.glBegin(GL.GL_TRIANGLES);
+			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-1, -1);
+			gl.glColor3f(0, 1, 0);		gl.glVertex2d(1, -1);
+			gl.glColor3f(0, 0, 1);		gl.glVertex2d(0, 1);
+		gl.glEnd();
+		
+		
+		/*
+		gl.glBegin(gl.GL_LINES);
+			gl.glVertex3d(-1, 0, 0);
+			gl.glVertex3d(1, 0, 0);
+		gl.glEnd();
+		*/
+		
+		
 	}
 
 	/**
@@ -56,48 +104,13 @@ public class GLScene implements GLEventListener {
 		
 		// Setup perspective projection, with aspect ratio matches viewport
 		gl.glLoadIdentity();							// reset projection matrix
-		glu.gluPerspective(45.0, aspect, 60, 100.0); 	// fovy, aspect, zNear, zFar
+		glu.gluPerspective(45.0, aspect, 0.1, 100.0); 	// fovy, aspect, zNear, zFar
 		
 		// Enable the model-view transform
 		gl.glLoadIdentity(); // reset
 	}
 	
-	private void update() {
-		angle = angle + 0.1f;
-	}
 	
-	private void render(GLAutoDrawable drawable) {
-		GL2 gl = drawable.getGL().getGL2();
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	// clear color and depth buffers
-		gl.glLoadIdentity();  // reset the model-view matrix
-		
-		/* colors
-		glColor3f(0.0, 0.0, 0.0);           black
-		glColor3f(1.0, 0.0, 0.0);           red
-		glColor3f(0.0, 1.0, 0.0);           green
-		glColor3f(1.0, 1.0, 0.0);           yellow
-		glColor3f(0.0, 0.0, 1.0);           blue
-		glColor3f(1.0, 0.0, 1.0);           magenta
-		glColor3f(0.0, 1.0, 1.0);           cyan
-		glColor3f(1.0, 1.0, 1.0);           white
-		 * 
-		 */
-		
-		
-		// ----- OpenGL rendering code here
-		
-		gl.glRotatef(angle, 1, 1, 1);
-		gl.glTranslatef(deltax, deltay, 0);
-		gl.glRotatef(rotx, 1, 0, 0);
-		gl.glRotatef(roty, 0, 1, 0);
-		
-		gl.glBegin(GL.GL_TRIANGLES);
-			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-1, -1);
-			gl.glColor3f(0, 1, 0);		gl.glVertex2d(1, -1);
-			gl.glColor3f(0, 0, 1);		gl.glVertex2d(0, 1);
-		gl.glEnd();
-		
-	}
 	
 	static void setTranslate(float deltax, float deltay) {
 		GLScene.deltax = deltax;
