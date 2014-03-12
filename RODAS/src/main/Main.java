@@ -48,10 +48,11 @@ import javax.swing.ButtonGroup;
 
 public class Main {
 
-	private JFrame mainWindow;
-	private JTextField textField;
-	private Integer xCursorPosition;
-	private Integer yCursorPosition;
+	private       JFrame      mainWindow;
+	private       JMenu       menuLF;
+	private       JTextField  textField;
+	private       Integer     xCursorPosition;
+	private       Integer     yCursorPosition;
 	private final ButtonGroup lfButtonGroup = new ButtonGroup();
 	private float deltax;
 	private float deltay;
@@ -79,6 +80,8 @@ public class Main {
 	 */
 	public Main() {
 		initialize();
+		initializeLF();
+		initializeGL();
 	}
 
 	/**
@@ -128,9 +131,40 @@ public class Main {
 		JMenuItem menuFileSaveAs = new JMenuItem("Save as...");
 		menuFile.add(menuFileSaveAs);
 		
-		JMenu menuLF = new JMenu("L&F");
+		//JMenu 
+		menuLF = new JMenu("L&F");
 		menuBar.add(menuLF);
 		
+		
+		JMenu menuHelp = new JMenu("Help");
+		menuBar.add(menuHelp);
+		
+		JMenuItem menuHelpAbout = new JMenuItem("About");
+		menuHelp.add(menuHelpAbout);
+		
+		JPanel rightPanel = new JPanel();
+		mainWindow.getContentPane().add(rightPanel, BorderLayout.EAST);
+		
+		JButton btnNewButton = new JButton("New button");
+		rightPanel.add(btnNewButton);
+		
+		
+		JPanel bottomPanel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) bottomPanel.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
+		mainWindow.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+		
+		textField = new JTextField();
+		textField.setColumns(30);
+		textField.setEditable(false);
+		bottomPanel.add(textField);
+		
+		JSeparator separator = new JSeparator();
+		bottomPanel.add(separator);
+		
+	}
+
+	private void initializeLF() {
 		final UIManager.LookAndFeelInfo[] lfinfo = UIManager.getInstalledLookAndFeels();
 		for (int i = 0; i < lfinfo.length; i++) {
 			final LookAndFeelInfo lfName = lfinfo[i];
@@ -185,19 +219,9 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		JMenu menuHelp = new JMenu("Help");
-		menuBar.add(menuHelp);
-		
-		JMenuItem menuHelpAbout = new JMenuItem("About");
-		menuHelp.add(menuHelpAbout);
-		
-		JPanel rightPanel = new JPanel();
-		mainWindow.getContentPane().add(rightPanel, BorderLayout.EAST);
-		
-		JButton btnNewButton = new JButton("New button");
-		rightPanel.add(btnNewButton);
-		
+	}
+	
+	private void initializeGL() {
 		// Initialization OpenGl
 		GLProfile glp = GLProfile.getDefault();
 		GLCapabilities caps = new GLCapabilities(glp);
@@ -225,7 +249,7 @@ public class Main {
 				int ysize = canvas.getHeight();
 				deltax = deltax + (float) xmove / (float) xsize;
 				deltay = deltay + (float) ymove / (float) ysize;
-				rotx = rotx + (float) ymove / (float) ysize * 10f;
+				rotx = rotx - (float) ymove / (float) ysize * 10f;
 				roty = roty + (float) xmove / (float) xsize * 10f;
 				if (SwingUtilities.isLeftMouseButton(arg0)) GLScene.setTranslate(deltax, deltay);
 				if (SwingUtilities.isRightMouseButton(arg0)) GLScene.setRotate(rotx, roty);
@@ -236,20 +260,6 @@ public class Main {
 		final Animator animator = new Animator(canvas);
 		animator.start();
 		// end of initialization OpenGL
-		
-		JPanel bottomPanel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) bottomPanel.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		mainWindow.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
-		
-		textField = new JTextField();
-		textField.setColumns(30);
-		textField.setEditable(false);
-		bottomPanel.add(textField);
-		
-		JSeparator separator = new JSeparator();
-		bottomPanel.add(separator);
-		
 	}
-
+	
 }
