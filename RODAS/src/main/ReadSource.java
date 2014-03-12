@@ -15,7 +15,7 @@ public class ReadSource {
 	static int nl;				// number of lines
 	
 	static Vector<Point> vPoints;
-	static Vector<Line> vLines;
+	static Vector<Line>  vLines;
 	
 	static void ReadDataSource(String strFileName) {
 		

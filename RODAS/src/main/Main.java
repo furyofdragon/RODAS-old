@@ -251,7 +251,7 @@ public class Main {
 				deltay = deltay + (float) ymove / (float) ysize;
 				rotx = rotx - (float) ymove / (float) ysize * 10f;
 				roty = roty + (float) xmove / (float) xsize * 10f;
-				if (SwingUtilities.isLeftMouseButton(arg0)) GLScene.setTranslate(deltax, deltay);
+				if (SwingUtilities.isLeftMouseButton(arg0))  GLScene.setTranslate(deltax, deltay);
 				if (SwingUtilities.isRightMouseButton(arg0)) GLScene.setRotate(rotx, roty);
 				
 			}
