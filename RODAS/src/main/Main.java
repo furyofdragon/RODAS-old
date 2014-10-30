@@ -44,6 +44,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.ButtonGroup;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class Main {
@@ -102,9 +104,8 @@ public class Main {
 		menuBar.add(menuFile);
 		
 		JMenuItem menuFileOpen = new JMenuItem("Open...");
-		menuFileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
-		menuFileOpen.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent arg0) {
+		menuFileOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser fileopen = new JFileChooser();
 				//fileopen.addChoosableFileFilter(new FileNameExtensionFilter("RODAS model (*.rfm)", "rfm"));
 				fileopen.setFileFilter(new FileNameExtensionFilter("RODAS model (*.rm)", "rm"));
@@ -122,6 +123,7 @@ public class Main {
 				}
 			}
 		});
+		menuFileOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		menuFile.add(menuFileOpen);
 		
 		JMenuItem menuFileSave = new JMenuItem("Save");
@@ -191,7 +193,9 @@ public class Main {
 					};
 				}
 				
+				
 			});
+			//lfitem.setSelected(true);
 			menuLF.add(lfitem);
 			lfButtonGroup.add(lfitem);
 		}
@@ -204,7 +208,12 @@ public class Main {
 		
 		// setup System L&F as default
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			String lookAndFeel = UIManager.getSystemLookAndFeelClassName();
+			UIManager.setLookAndFeel(lookAndFeel);
+			for (int i = 0; i < lfinfo.length; i++) {
+				if (lfinfo[i].getClassName() == lookAndFeel) ;
+				
+			}
 			//UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
