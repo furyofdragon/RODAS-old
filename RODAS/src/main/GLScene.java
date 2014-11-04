@@ -19,49 +19,8 @@ public class GLScene implements GLEventListener {
 	* Called back by the animator to perform rendering.
 	*/
 	public void display(GLAutoDrawable drawable) {
-		GL2 gl = drawable.getGL().getGL2();								// get the OpenGL graphics context
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	// clear color and depth buffers
-		gl.glLoadIdentity();											// reset the model-view matrix
-		
-		/* colors
-		glColor3f(0.0, 0.0, 0.0);           black
-		glColor3f(1.0, 0.0, 0.0);           red
-		glColor3f(0.0, 1.0, 0.0);           green
-		glColor3f(1.0, 1.0, 0.0);           yellow
-		glColor3f(0.0, 0.0, 1.0);           blue
-		glColor3f(1.0, 0.0, 1.0);           magenta
-		glColor3f(0.0, 1.0, 1.0);           cyan
-		glColor3f(1.0, 1.0, 1.0);           white
-		 * 
-		 */
-		
-		
-		// ----- OpenGL rendering code here
-		
-		//gl.glRotatef(angle, 1, 1, 1);
-		//gl.glTranslatef(deltax, deltay, 0);
-		//gl.glRotatef(rotx, 1, 0, 0);
-		//gl.glRotatef(roty, 0, 1, 0);
-		
-		//the gluLookAt() method, which takes three 3D coordinates:
-		//(0, 0, distance): Where we are standing ("eye")
-		//(0, 0, 0): Where we are looking at ("at"): Directly at the center of the coordinate system.
-		//(0, 1, 0): Where our head points into the sky ("up"): Directly up, along the Y coordinate
-		//(remember that Y is counted as if on a graph, not like in an image manipulation program).
-		
-		gl.glLoadIdentity();  // reset the model-view matrix
-		gl.glRotatef(rotx, 1, 0, 0);
-		gl.glRotatef(roty, 0, 1, 0);
-		gl.glTranslatef(deltax, deltay, 0);
-		
-		gl.glBegin(GL.GL_TRIANGLES);
-			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-1, -1);
-			gl.glColor3f(0, 1, 0);		gl.glVertex2d(1, -1);
-			gl.glColor3f(0, 0, 1);		gl.glVertex2d(0, 1);
-		gl.glEnd();
-		
-		
-		
+		render(drawable);
+		update();
 	}
 
 	/**
@@ -108,6 +67,58 @@ public class GLScene implements GLEventListener {
 		gl.glLoadIdentity(); // reset
 	}
 	
+	
+	
+	private void render(GLAutoDrawable drawable) {
+		
+		GL2 gl = drawable.getGL().getGL2();								// get the OpenGL graphics context
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	// clear color and depth buffers
+		gl.glLoadIdentity();											// reset the model-view matrix
+		
+		/* colors
+		glColor3f(0.0, 0.0, 0.0);           black
+		glColor3f(1.0, 0.0, 0.0);           red
+		glColor3f(0.0, 1.0, 0.0);           green
+		glColor3f(1.0, 1.0, 0.0);           yellow
+		glColor3f(0.0, 0.0, 1.0);           blue
+		glColor3f(1.0, 0.0, 1.0);           magenta
+		glColor3f(0.0, 1.0, 1.0);           cyan
+		glColor3f(1.0, 1.0, 1.0);           white
+		 * 
+		 */
+		
+		
+		// ----- OpenGL rendering code here
+		
+		//gl.glRotatef(angle, 1, 1, 1);
+		//gl.glTranslatef(deltax, deltay, 0);
+		//gl.glRotatef(rotx, 1, 0, 0);
+		//gl.glRotatef(roty, 0, 1, 0);
+		
+		//the gluLookAt() method, which takes three 3D coordinates:
+		//(0, 0, distance): Where we are standing ("eye")
+		//(0, 0, 0): Where we are looking at ("at"): Directly at the center of the coordinate system.
+		//(0, 1, 0): Where our head points into the sky ("up"): Directly up, along the Y coordinate
+		//(remember that Y is counted as if on a graph, not like in an image manipulation program).
+		
+		gl.glLoadIdentity();  // reset the model-view matrix
+		gl.glRotatef(rotx, 1, 0, 0);
+		gl.glRotatef(roty, 0, 1, 0);
+		gl.glTranslatef(deltax, deltay, 0);
+		
+		gl.glBegin(GL.GL_TRIANGLES);
+			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-1, -1);
+			gl.glColor3f(0, 1, 0);		gl.glVertex2d(1, -1);
+			gl.glColor3f(0, 0, 1);		gl.glVertex2d(0, 1);
+		gl.glEnd();
+		
+	}
+	
+	
+	
+	private void update() {
+		
+	}
 	
 	
 	static void setTranslate(float deltax, float deltay) {
