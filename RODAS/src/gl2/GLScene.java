@@ -1,4 +1,4 @@
-package main;
+package gl2;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
@@ -121,12 +121,12 @@ public class GLScene implements GLEventListener {
 	}
 	
 	
-	static void setTranslate(float deltax, float deltay) {
+	public static void setTranslate(float deltax, float deltay) {
 		GLScene.deltax = deltax;
 		GLScene.deltay = deltay;
 	}
 	
-	static void setRotate(float rotx, float roty) {
+	public static void setRotate(float rotx, float roty) {
 		GLScene.rotx = rotx;
 		GLScene.roty = roty;
 	}

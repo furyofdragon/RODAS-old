@@ -1,5 +1,7 @@
 package main;
 
+import gl2.GLScene;
+
 import java.awt.EventQueue;
 
 import javax.media.opengl.GLCapabilities;
@@ -44,6 +46,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.ButtonGroup;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
