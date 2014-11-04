@@ -1,4 +1,4 @@
-package gl2;
+package gl2work;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;

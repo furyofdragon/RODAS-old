@@ -1,6 +1,6 @@
 package main;
 
-import gl2.GLScene;
+import gl2work.GLScene;
 
 import java.awt.EventQueue;
 
