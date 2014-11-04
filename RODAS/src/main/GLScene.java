@@ -101,7 +101,7 @@ public class GLScene implements GLEventListener {
 		//(0, 1, 0): Where our head points into the sky ("up"): Directly up, along the Y coordinate
 		//(remember that Y is counted as if on a graph, not like in an image manipulation program).
 		
-		gl.glLoadIdentity();  // reset the model-view matrix
+		
 		gl.glRotatef(rotx, 1, 0, 0);
 		gl.glRotatef(roty, 0, 1, 0);
 		gl.glTranslatef(deltax, deltay, 0);
