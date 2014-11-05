@@ -6,7 +6,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-public class GLScene implements GLEventListener {
+public class GL2Scene implements GLEventListener {
 	
 	private GLU glu;  // for the GL Utility
 	
@@ -123,14 +123,14 @@ public class GLScene implements GLEventListener {
 	
 	
 	public static void setTranslate(float deltax, float deltay, float deltaz) {
-		GLScene.deltax = deltax;
-		GLScene.deltay = deltay;
-		GLScene.deltay = deltaz;
+		GL2Scene.deltax = deltax;
+		GL2Scene.deltay = deltay;
+		GL2Scene.deltay = deltaz;
 	}
 	
 	public static void setRotate(float rotx, float roty) {
-		GLScene.rotx = rotx;
-		GLScene.roty = roty;
+		GL2Scene.rotx = rotx;
+		GL2Scene.roty = roty;
 	}
 
 }

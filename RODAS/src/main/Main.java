@@ -1,6 +1,6 @@
 package main;
 
-import gl2work.GLScene;
+import gl2work.GL2Scene;
 
 import java.awt.EventQueue;
 
@@ -243,7 +243,7 @@ public class Main {
 		final GLJPanel canvas = new GLJPanel(caps);
 		
 		mainWindow.getContentPane().add(canvas, BorderLayout.CENTER);
-		canvas.addGLEventListener(new GLScene());
+		canvas.addGLEventListener(new GL2Scene());
 		canvas.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent arg0) {
 				xCursorPosition = arg0.getX();
@@ -266,15 +266,15 @@ public class Main {
 				deltay = deltay + (float) ymove / (float) ysize * 0.1f;
 				rotx   = rotx   - (float) ymove / (float) ysize * 10f;
 				roty   = roty   + (float) xmove / (float) xsize * 10f;
-				if (SwingUtilities.isLeftMouseButton(arg0))   GLScene.setTranslate(deltax, deltay, 0f);
-				if (SwingUtilities.isMiddleMouseButton(arg0)) GLScene.setTranslate(deltax, deltay, 0f);
-				if (SwingUtilities.isRightMouseButton(arg0))  GLScene.setRotate(rotx, roty);
+				if (SwingUtilities.isLeftMouseButton(arg0))   GL2Scene.setTranslate(deltax, deltay, 0f);
+				if (SwingUtilities.isMiddleMouseButton(arg0)) GL2Scene.setTranslate(deltax, deltay, 0f);
+				if (SwingUtilities.isRightMouseButton(arg0))  GL2Scene.setRotate(rotx, roty);
 			}
 		});
 		canvas.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
 				deltaz = deltaz + arg0.getWheelRotation()*0.01f;
-				GLScene.setTranslate(0f, 0f, deltaz);
+				GL2Scene.setTranslate(0f, 0f, deltaz);
 			}
 		});
 		
