@@ -12,6 +12,7 @@ public class GLScene implements GLEventListener {
 	
 	private static float deltax;
 	private static float deltay;
+	private static float deltaz;
 	private static float rotx;
 	private static float roty;
 
@@ -104,7 +105,7 @@ public class GLScene implements GLEventListener {
 		
 		gl.glRotatef(rotx, 1, 0, 0);
 		gl.glRotatef(roty, 0, 1, 0);
-		gl.glTranslatef(deltax, deltay, 0);
+		gl.glTranslatef(deltax, deltay, deltaz);
 		
 		gl.glBegin(GL.GL_TRIANGLES);
 			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-1, -1);
@@ -121,9 +122,10 @@ public class GLScene implements GLEventListener {
 	}
 	
 	
-	public static void setTranslate(float deltax, float deltay) {
+	public static void setTranslate(float deltax, float deltay, float deltaz) {
 		GLScene.deltax = deltax;
 		GLScene.deltay = deltay;
+		GLScene.deltay = deltaz;
 	}
 	
 	public static void setRotate(float rotx, float roty) {

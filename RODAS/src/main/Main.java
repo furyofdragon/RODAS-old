@@ -49,6 +49,8 @@ import javax.swing.ButtonGroup;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseWheelListener;
+import java.awt.event.MouseWheelEvent;
 
 
 public class Main {
@@ -59,10 +61,11 @@ public class Main {
 	private       Integer     xCursorPosition;
 	private       Integer     yCursorPosition;
 	private final ButtonGroup lfButtonGroup = new ButtonGroup();
-	private float deltax;
-	private float deltay;
-	private float rotx;
-	private float roty;
+	private float             deltax = 0f;
+	private float             deltay = 0f;
+	private float             deltaz = 0f;
+	private float             rotx   = 0f;
+	private float             roty   = 0f;
 
 	/**
 	 * Launch the application.
@@ -259,13 +262,18 @@ public class Main {
 				int ymove = arg0.getY() - yCursorPosition;
 				int xsize = canvas.getWidth();
 				int ysize = canvas.getHeight();
-				deltax = deltax + (float) xmove / (float) xsize;
-				deltay = deltay + (float) ymove / (float) ysize;
-				rotx = rotx - (float) ymove / (float) ysize * 10f;
-				roty = roty + (float) xmove / (float) xsize * 10f;
-				if (SwingUtilities.isLeftMouseButton(arg0))  GLScene.setTranslate(deltax, deltay);
-				if (SwingUtilities.isRightMouseButton(arg0)) GLScene.setRotate(rotx, roty);
-				
+				deltax = deltax + (float) xmove / (float) xsize * 0.1f;
+				deltay = deltay + (float) ymove / (float) ysize * 0.1f;
+				rotx   = rotx   - (float) ymove / (float) ysize * 10f;
+				roty   = roty   + (float) xmove / (float) xsize * 10f;
+				if (SwingUtilities.isLeftMouseButton(arg0))   GLScene.setTranslate(deltax, deltay, 0f);
+				if (SwingUtilities.isRightMouseButton(arg0))  GLScene.setRotate(rotx, roty);
+			}
+		});
+		canvas.addMouseWheelListener(new MouseWheelListener() {
+			public void mouseWheelMoved(MouseWheelEvent arg0) {
+				deltaz = deltaz + arg0.getWheelRotation()*0.01f;;
+				GLScene.setTranslate(0f, 0f, deltaz);
 			}
 		});
 		
