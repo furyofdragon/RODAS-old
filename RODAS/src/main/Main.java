@@ -267,6 +267,7 @@ public class Main {
 				rotx   = rotx   - (float) ymove / (float) ysize * 10f;
 				roty   = roty   + (float) xmove / (float) xsize * 10f;
 				if (SwingUtilities.isLeftMouseButton(arg0))   GLScene.setTranslate(deltax, deltay, 0f);
+				if (SwingUtilities.isMiddleMouseButton(arg0)) GLScene.setTranslate(deltax, deltay, 0f);
 				if (SwingUtilities.isRightMouseButton(arg0))  GLScene.setRotate(rotx, roty);
 			}
 		});
