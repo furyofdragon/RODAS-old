@@ -36,14 +36,16 @@ public class GL2Scene implements GLEventListener {
 	* to perform one-time initialization. Run only once.
 	*/
 	public void init(GLAutoDrawable drawable) {
-		GL2 gl = drawable.getGL().getGL2();		// get the OpenGL graphics context
-		glu = new GLU();						// get GL Utilities
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);// set background (clear) color -- black
-		gl.glClearDepth(1.0f);					// set clear depth value to farthest
-		gl.glEnable(GL2.GL_DEPTH_TEST);			// enables depth testing
-		gl.glDepthFunc(GL2.GL_LEQUAL);			// the type of depth test to do
-		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST); // best perspective correction
-		gl.glShadeModel(GL2.GL_SMOOTH);			// blends colors nicely, and smoothes out lighting
+		GL2 gl = drawable.getGL().getGL2();								// get the OpenGL graphics context
+		glu = new GLU();												// get GL Utilities
+		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);						// set background (clear) color -- black
+		gl.glClearDepth(1.0f);											// set clear depth value to farthest
+		gl.glEnable(GL2.GL_DEPTH_TEST);									// enables depth testing
+		gl.glDepthFunc(GL2.GL_LEQUAL);									// the type of depth test to do
+		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);	// best perspective correction
+		gl.glShadeModel(GL2.GL_SMOOTH);									// blends colors nicely, and smoothes out lighting
+		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);						// Set background color in RGBA. Alpha: 0 (transparent) 1 (opaque)
+		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);	// Do the best perspective correction
 		gl.setSwapInterval(1);
 	}
 
@@ -65,6 +67,7 @@ public class GL2Scene implements GLEventListener {
 		glu.gluPerspective(45.0, aspect, 0.1, 100.0); 	// fovy, aspect, zNear, zFar
 		
 		// Enable the model-view transform
+		//gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glLoadIdentity(); // reset
 	}
 	
