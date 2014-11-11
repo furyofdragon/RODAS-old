@@ -21,7 +21,7 @@ public class GL2Scene implements GLEventListener {
 	   private float anglePyramid = 0;    // rotational angle in degree for pyramid
 	   private float angleCube = 0;       // rotational angle in degree for cube
 	   private float speedPyramid = 2.0f; // rotational speed for pyramid
-	   private float speedCube = -1.5f;   // rotational speed for cube
+	   private float speedCube = 1.5f;   // rotational speed for cube
 
 	/**
 	* Called back by the animator to perform rendering.
@@ -99,6 +99,14 @@ public class GL2Scene implements GLEventListener {
 		 */
 		
 		
+		/*
+		 * coordinate system
+		 * X - from left to right
+		 * Y - from bottom to up
+		 * Z - from screen to us
+		 */
+		
+		
 		// ----- OpenGL rendering code here
 		
 		//gl.glRotatef(angle, 1, 1, 1);
@@ -118,7 +126,9 @@ public class GL2Scene implements GLEventListener {
 		gl.glRotatef(rotx, 1, 0, 0);
 		gl.glRotatef(roty, 0, 1, 0);
 		gl.glTranslatef(0.5f, 0.0f, -6.0f);
+		//gl.glPushMatrix();
 		gl.glTranslatef(deltax, deltay, 0f);
+		//gl.glPopMatrix();
 		if (deltaz == 0f) deltaz = 1f;
 		gl.glScalef(deltaz, deltaz, deltaz);
 				
@@ -173,7 +183,8 @@ public class GL2Scene implements GLEventListener {
 	      // ----- Render the Color Cube -----
 	      gl.glLoadIdentity();                // reset the current model-view matrix
 	      gl.glTranslatef(1.6f, 0.0f, -7.0f); // translate right and into the screen
-	      gl.glRotatef(angleCube, 1.0f, 1.0f, 1.0f); // rotate about the x, y and z-axes
+	      //gl.glRotatef(angleCube, 1.0f, 1.0f, 1.0f); // rotate about the x, y and z-axes
+	      gl.glRotatef(angleCube, 0f, 0f, 1.0f);
 	 
 	      gl.glBegin(GL2.GL_QUADS); // of the color cube
 	 
