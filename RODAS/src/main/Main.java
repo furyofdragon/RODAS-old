@@ -262,10 +262,14 @@ public class Main {
 				int ymove = arg0.getY() - yCursorPosition;
 				int xsize = canvas.getWidth();
 				int ysize = canvas.getHeight();
-				deltax = deltax + (float) xmove / (float) xsize * 0.1f;
-				deltay = deltay + (float) ymove / (float) ysize * 0.1f;
-				rotx   = rotx   - (float) ymove / (float) ysize * 10f;
-				roty   = roty   + (float) xmove / (float) xsize * 10f;
+				//deltax = deltax + (float) xmove / (float) xsize * 0.1f;
+				//deltay = deltay + (float) ymove / (float) ysize * 0.1f;
+				//rotx   = rotx   - (float) ymove / (float) ysize * 10f;
+				//roty   = roty   + (float) xmove / (float) xsize * 10f;
+				deltax +=   (float) xmove / (float) xsize * 0.1f;
+				deltay +=   (float) ymove / (float) ysize * 0.1f;
+				rotx   += - (float) ymove / (float) ysize * 10f;
+				roty   +=   (float) xmove / (float) xsize * 10f;
 				if (SwingUtilities.isLeftMouseButton(arg0))   GL2Scene.setTranslate(deltax, deltay, 0f);
 				if (SwingUtilities.isMiddleMouseButton(arg0)) GL2Scene.setTranslate(deltax, deltay, 0f);
 				if (SwingUtilities.isRightMouseButton(arg0))  GL2Scene.setRotate(rotx, roty);
@@ -273,7 +277,8 @@ public class Main {
 		});
 		canvas.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
-				deltaz = deltaz + arg0.getWheelRotation()*0.01f;
+				//deltaz = deltaz + arg0.getWheelRotation()*0.01f;
+				deltaz += arg0.getWheelRotation()*0.01f;
 				GL2Scene.setTranslate(0f, 0f, deltaz);
 			}
 		});

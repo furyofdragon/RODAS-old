@@ -4,6 +4,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
+import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
 public class GL2Scene implements GLEventListener {
@@ -15,6 +16,12 @@ public class GL2Scene implements GLEventListener {
 	private static float deltaz;
 	private static float rotx;
 	private static float roty;
+	
+	
+	   private float anglePyramid = 0;    // rotational angle in degree for pyramid
+	   private float angleCube = 0;       // rotational angle in degree for cube
+	   private float speedPyramid = 2.0f; // rotational speed for pyramid
+	   private float speedCube = -1.5f;   // rotational speed for cube
 
 	/**
 	* Called back by the animator to perform rendering.
@@ -67,7 +74,7 @@ public class GL2Scene implements GLEventListener {
 		glu.gluPerspective(45.0, aspect, 0.1, 100.0); 	// fovy, aspect, zNear, zFar
 		
 		// Enable the model-view transform
-		//gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
 		gl.glLoadIdentity(); // reset
 	}
 	
@@ -106,22 +113,119 @@ public class GL2Scene implements GLEventListener {
 		//(remember that Y is counted as if on a graph, not like in an image manipulation program).
 		
 		
+		// ----- Render my triangle -----
+		gl.glLoadIdentity();                 // reset the model-view matrix
 		gl.glRotatef(rotx, 1, 0, 0);
 		gl.glRotatef(roty, 0, 1, 0);
 		gl.glTranslatef(deltax, deltay, deltaz);
-		
+				
 		gl.glBegin(GL.GL_TRIANGLES);
 			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-1, -1);
 			gl.glColor3f(0, 1, 0);		gl.glVertex2d(1, -1);
 			gl.glColor3f(0, 0, 1);		gl.glVertex2d(0, 1);
 		gl.glEnd();
 		
+		
+	      // ----- Render the Pyramid -----
+	      gl.glLoadIdentity();                 // reset the model-view matrix
+	      gl.glTranslatef(-1.6f, 0.0f, -6.0f); // translate left and into the screen
+	      gl.glRotatef(anglePyramid, -0.2f, 1.0f, 0.0f); // rotate about the y-axis
+	 
+	      gl.glBegin(GL.GL_TRIANGLES); // of the pyramid
+	 
+	      // Font-face triangle
+	      gl.glColor3f(1.0f, 0.0f, 0.0f); // Red
+	      gl.glVertex3f(0.0f, 1.0f, 0.0f);
+	      gl.glColor3f(0.0f, 1.0f, 0.0f); // Green
+	      gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+	      gl.glColor3f(0.0f, 0.0f, 1.0f); // Blue
+	      gl.glVertex3f(1.0f, -1.0f, 1.0f);
+	 
+	      // Right-face triangle
+	      gl.glColor3f(1.0f, 0.0f, 0.0f); // Red
+	      gl.glVertex3f(0.0f, 1.0f, 0.0f);
+	      gl.glColor3f(0.0f, 0.0f, 1.0f); // Blue
+	      gl.glVertex3f(1.0f, -1.0f, 1.0f);
+	      gl.glColor3f(0.0f, 1.0f, 0.0f); // Green
+	      gl.glVertex3f(1.0f, -1.0f, -1.0f);
+	 
+	      // Back-face triangle
+	      gl.glColor3f(1.0f, 0.0f, 0.0f); // Red
+	      gl.glVertex3f(0.0f, 1.0f, 0.0f);
+	      gl.glColor3f(0.0f, 1.0f, 0.0f); // Green
+	      gl.glVertex3f(1.0f, -1.0f, -1.0f);
+	      gl.glColor3f(0.0f, 0.0f, 1.0f); // Blue
+	      gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+	 
+	      // Left-face triangle
+	      gl.glColor3f(1.0f, 0.0f, 0.0f); // Red
+	      gl.glVertex3f(0.0f, 1.0f, 0.0f);
+	      gl.glColor3f(0.0f, 0.0f, 1.0f); // Blue
+	      gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+	      gl.glColor3f(0.0f, 1.0f, 0.0f); // Green
+	      gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+	 
+	      gl.glEnd(); // of the pyramid
+	 
+	      // ----- Render the Color Cube -----
+	      gl.glLoadIdentity();                // reset the current model-view matrix
+	      gl.glTranslatef(1.6f, 0.0f, -7.0f); // translate right and into the screen
+	      gl.glRotatef(angleCube, 1.0f, 1.0f, 1.0f); // rotate about the x, y and z-axes
+	 
+	      gl.glBegin(GL2.GL_QUADS); // of the color cube
+	 
+	      // Top-face
+	      gl.glColor3f(0.0f, 1.0f, 0.0f); // green
+	      gl.glVertex3f(1.0f, 1.0f, -1.0f);
+	      gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+	      gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+	      gl.glVertex3f(1.0f, 1.0f, 1.0f);
+	 
+	      // Bottom-face
+	      gl.glColor3f(1.0f, 0.5f, 0.0f); // orange
+	      gl.glVertex3f(1.0f, -1.0f, 1.0f);
+	      gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+	      gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+	      gl.glVertex3f(1.0f, -1.0f, -1.0f);
+	 
+	      // Front-face
+	      gl.glColor3f(1.0f, 0.0f, 0.0f); // red
+	      gl.glVertex3f(1.0f, 1.0f, 1.0f);
+	      gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+	      gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+	      gl.glVertex3f(1.0f, -1.0f, 1.0f);
+	 
+	      // Back-face
+	      gl.glColor3f(1.0f, 1.0f, 0.0f); // yellow
+	      gl.glVertex3f(1.0f, -1.0f, -1.0f);
+	      gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+	      gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+	      gl.glVertex3f(1.0f, 1.0f, -1.0f);
+	 
+	      // Left-face
+	      gl.glColor3f(0.0f, 0.0f, 1.0f); // blue
+	      gl.glVertex3f(-1.0f, 1.0f, 1.0f);
+	      gl.glVertex3f(-1.0f, 1.0f, -1.0f);
+	      gl.glVertex3f(-1.0f, -1.0f, -1.0f);
+	      gl.glVertex3f(-1.0f, -1.0f, 1.0f);
+	 
+	      // Right-face
+	      gl.glColor3f(1.0f, 0.0f, 1.0f); // magenta
+	      gl.glVertex3f(1.0f, 1.0f, -1.0f);
+	      gl.glVertex3f(1.0f, 1.0f, 1.0f);
+	      gl.glVertex3f(1.0f, -1.0f, 1.0f);
+	      gl.glVertex3f(1.0f, -1.0f, -1.0f);
+	 
+	      gl.glEnd(); // of the color cube
+		
+		
 	}
 	
 	
 	
 	private void update() {
-		
+	      anglePyramid += speedPyramid;
+	      angleCube += speedCube;
 	}
 	
 	
