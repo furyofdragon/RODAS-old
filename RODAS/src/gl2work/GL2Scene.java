@@ -117,7 +117,10 @@ public class GL2Scene implements GLEventListener {
 		gl.glLoadIdentity();                 // reset the model-view matrix
 		gl.glRotatef(rotx, 1, 0, 0);
 		gl.glRotatef(roty, 0, 1, 0);
-		gl.glTranslatef(deltax, deltay, deltaz);
+		gl.glTranslatef(0.5f, 0.0f, -6.0f);
+		gl.glTranslatef(deltax, deltay, 0f);
+		if (deltaz == 0f) deltaz = 1f;
+		gl.glScalef(deltaz, deltaz, deltaz);
 				
 		gl.glBegin(GL.GL_TRIANGLES);
 			gl.glColor3f(1, 0, 0);		gl.glVertex2d(-1, -1);
@@ -238,6 +241,10 @@ public class GL2Scene implements GLEventListener {
 	public static void setRotate(float rotx, float roty) {
 		GL2Scene.rotx = rotx;
 		GL2Scene.roty = roty;
+	}
+	
+	public static void setScale(float deltaz) {
+		GL2Scene.deltaz = deltaz;
 	}
 
 }

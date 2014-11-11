@@ -277,9 +277,9 @@ public class Main {
 		});
 		canvas.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
-				//deltaz = deltaz + arg0.getWheelRotation()*0.01f;
-				deltaz += arg0.getWheelRotation()*0.01f;
-				GL2Scene.setTranslate(0f, 0f, deltaz);
+				//deltaz = deltaz + arg0.getWheelRotation()*0.1f;
+				deltaz += arg0.getWheelRotation()*0.1f;
+				GL2Scene.setScale(deltaz);
 			}
 		});
 		
