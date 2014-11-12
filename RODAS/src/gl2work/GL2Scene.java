@@ -71,7 +71,12 @@ public class GL2Scene implements GLEventListener {
 		// Setup perspective projection, with aspect ratio matches viewport
 		gl.glMatrixMode(GL2.GL_PROJECTION);				// choose projection matrix
 		gl.glLoadIdentity();							// reset projection matrix
-		glu.gluPerspective(45.0, aspect, 0.1, 100.0); 	// fovy, aspect, zNear, zFar
+		glu.gluPerspective(45.0, aspect, 0.01, 100.0); 	// fovy, aspect, zNear, zFar
+		glu.gluLookAt(
+		           0, 0, 10, 	// eye
+		           0, 0, 0, 	// at
+		           0, 1, 0 		// up
+		           );
 		
 		// Enable the model-view transform
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
@@ -123,12 +128,10 @@ public class GL2Scene implements GLEventListener {
 		
 		// ----- Render my triangle -----
 		gl.glLoadIdentity();                 // reset the model-view matrix
+		gl.glTranslatef(0.5f, 0.0f, -6.0f);
+		gl.glTranslatef(deltax, deltay, 0f);
 		gl.glRotatef(rotx, 1, 0, 0);
 		gl.glRotatef(roty, 0, 1, 0);
-		gl.glTranslatef(0.5f, 0.0f, -6.0f);
-		//gl.glPushMatrix();
-		gl.glTranslatef(deltax, deltay, 0f);
-		//gl.glPopMatrix();
 		if (deltaz == 0f) deltaz = 1f;
 		gl.glScalef(deltaz, deltaz, deltaz);
 				
