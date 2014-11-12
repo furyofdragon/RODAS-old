@@ -60,6 +60,8 @@ public class Main {
 	private       JTextField  textField;
 	private       Integer     xCursorPosition;
 	private       Integer     yCursorPosition;
+	private       Integer     lastXCursorPosition;
+	private       Integer     lastYCursorPosition;
 	private final ButtonGroup lfButtonGroup = new ButtonGroup();
 	private float             deltax = 0f;
 	private float             deltay = 0f;
@@ -249,6 +251,9 @@ public class Main {
 				xCursorPosition = arg0.getX();
 				yCursorPosition = arg0.getY();
 				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
+				lastXCursorPosition = xCursorPosition;
+				lastYCursorPosition = yCursorPosition;
+				//http://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_Arcball
 			}
 		});
 		canvas.addMouseMotionListener(new MouseMotionAdapter() {
@@ -274,6 +279,8 @@ public class Main {
 				if (SwingUtilities.isMiddleMouseButton(arg0)) GL2Scene.setTranslate(deltax, deltay, 0f);
 				if (SwingUtilities.isRightMouseButton(arg0))  GL2Scene.setRotate(rotx, roty);
 			}
+			
+			
 		});
 		canvas.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {

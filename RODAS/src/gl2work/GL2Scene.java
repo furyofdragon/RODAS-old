@@ -71,15 +71,17 @@ public class GL2Scene implements GLEventListener {
 		// Setup perspective projection, with aspect ratio matches viewport
 		gl.glMatrixMode(GL2.GL_PROJECTION);				// choose projection matrix
 		gl.glLoadIdentity();							// reset projection matrix
-		//glu.gluPerspective(45.0, aspect, 0.01, 100.0); 	// fovy, aspect, zNear, zFar
+		glu.gluPerspective(45.0, aspect, 0.01, 100.0); 	// fovy, aspect, zNear, zFar
 		
-		glu.gluOrtho2D( 0, 10, 0, 10);
+		//gl.glViewport(0, 640, 0, 480);
+		//glu.gluOrtho2D( 0, 1, 0, 1);
 		
-		//glu.gluLookAt(
-		//           0, 0, 10, 	// eye
-		//           0, 0, 0, 	// at
-		//           0, 1, 0 		// up
-		//           );
+		
+		glu.gluLookAt(
+		          0, 0, 10, 	// eye
+		           0, 0, 0, 	// at
+		           0, 1, 0 		// up
+		           );
 		
 		// GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble near, GLdouble far
 		// GLdouble left, GLdouble right, GLdouble bottom, GLdouble top
