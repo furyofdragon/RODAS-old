@@ -12,6 +12,12 @@ public class Vec3D {
 		this.y  = y;
 		this.z  = z;
 	}
+	
+	public Vec3D() {
+		this.x = 0;
+		this.y = 0;
+		this.z = 0;
+	}
 
 	public float getX() {
 		return x;
@@ -41,27 +47,32 @@ public class Vec3D {
 		return length = (float) Math.sqrt(x*x + y*y + z*z);
 	}
 	
-	public Vec3D normalize(Vec3D normalizedVector) {
-		float length = normalizedVector.length;
-		x = x / length;
-		y = y / length;
-		z = z / length;
-		normalizedVector.x = x;
-		normalizedVector.y = y;
-		normalizedVector.z = z;
-		return normalizedVector;
+	public Vec3D normalize(Vec3D v) {
+		float length = v.length;
+		Vec3D normalizedV = new Vec3D();
+		normalizedV.x = v.x / length;
+		normalizedV.y = v.y / length;
+		normalizedV.z = v.z / length;
+		return normalizedV;
 	}
 	
-	@SuppressWarnings("null")
-	public Vec3D vectorProduce(Vec3D a, Vec3D b) {
-		Vec3D result = null;
+	public static Vec3D sum(Vec3D a, Vec3D b) {
+		Vec3D result = new Vec3D();
+		result.x = a.x + b.x;
+		result.y = a.y + b.y;
+		result.z = a.z + b.z;
+		return result;
+	}
+	
+	public static Vec3D vectorProduce(Vec3D a, Vec3D b) {
+		Vec3D result = new Vec3D();
 		result.x =    (a.y * b.z - a.z * b.y);
 		result.y = -1*(a.x * b.z - a.z * b.x);
 		result.z =    (a.x * b.y - a.y * b.x);
 		return result;
 	}
 	
-	public float scalarProduce(Vec3D a, Vec3D b) {
+	public static float scalarProduce(Vec3D a, Vec3D b) {
 		return a.x*b.x + a.y*b.y +a.z*b.z;
 	}
 }

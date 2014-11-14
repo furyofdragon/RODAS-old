@@ -267,9 +267,9 @@ public class Main {
 				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
 				xCursorPosition = arg0.getX();
 				yCursorPosition = arg0.getY();
-				Vec3D va = Vec3D((float) lastXCursorPosition, (float) lastYCursorPosition, 0f);
-				Vec3D vb = Vec3D(    xCursorPosition,     yCursorPosition, 0f);
-				float angle = Math.acos(scalarProduce(va, vb));
+				Vec3D va = new Vec3D(lastXCursorPosition, lastYCursorPosition, 0f);
+				Vec3D vb = new Vec3D(    xCursorPosition,     yCursorPosition, 0f);
+				float angle = (float) Math.acos(Vec3D.scalarProduce(va, vb));
 				
 				int xmove = arg0.getX() - xCursorPosition;
 				int ymove = arg0.getY() - yCursorPosition;
