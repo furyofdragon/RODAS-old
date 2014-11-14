@@ -7,7 +7,7 @@ public class Vec3D {
 	private float z;
 	private float length;
 
-	public Vec3D(int id, float x, float y, float z) {
+	public Vec3D(float x, float y, float z) {
 		this.x  = x;
 		this.y  = y;
 		this.z  = z;
