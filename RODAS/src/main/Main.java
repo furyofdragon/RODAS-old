@@ -47,6 +47,8 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.ButtonGroup;
 
+import vec3D.Vec3D;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseWheelListener;
@@ -263,6 +265,12 @@ public class Main {
 			
 			public void mouseDragged(MouseEvent arg0) {
 				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
+				xCursorPosition = arg0.getX();
+				yCursorPosition = arg0.getY();
+				Vec3D va = Vec3D((float) lastXCursorPosition, (float) lastYCursorPosition, 0f);
+				Vec3D vb = Vec3D(    xCursorPosition,     yCursorPosition, 0f);
+				float angle = Math.acos(scalarProduce(va, vb));
+				
 				int xmove = arg0.getX() - xCursorPosition;
 				int ymove = arg0.getY() - yCursorPosition;
 				int xsize = canvas.getWidth();
