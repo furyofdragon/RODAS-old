@@ -68,8 +68,6 @@ public class Main {
 	private float             deltax = 0f;
 	private float             deltay = 0f;
 	private float             deltaz = 0f;
-	private float             rotx   = 0f;
-	private float             roty   = 0f;
 
 	/**
 	 * Launch the application.
@@ -267,9 +265,19 @@ public class Main {
 				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
 				xCursorPosition = arg0.getX();
 				yCursorPosition = arg0.getY();
-				Vec3D va = new Vec3D(lastXCursorPosition, lastYCursorPosition, 0f);
-				Vec3D vb = new Vec3D(    xCursorPosition,     yCursorPosition, 0f);
-				float angle = (float) Math.acos(Vec3D.scalarProduce(va, vb));
+				float a = lastXCursorPosition/canvas.getWidth();
+				float b = lastYCursorPosition/canvas.getHeight();
+				float c = (float) Math.sqrt(1 - a*a - b*b);
+				Vec3D va = new Vec3D(a, b, c);
+				//va = va.normalize(va);
+				a = xCursorPosition/canvas.getWidth();
+				b = yCursorPosition/canvas.getHeight();
+				c = (float) Math.sqrt(1 - a*a - b*b);
+				Vec3D vb = new Vec3D(a, b, c);
+				//vb = vb.normalize(vb);
+				Vec3D vr = Vec3D.vectorProduce(va, vb);
+				vr = vr.normalize(vr);
+				float angle = (float) Math.acos(Vec3D.scalarProduce(va, vb))*100;
 				
 				int xmove = arg0.getX() - xCursorPosition;
 				int ymove = arg0.getY() - yCursorPosition;
@@ -277,11 +285,9 @@ public class Main {
 				int ysize = canvas.getHeight();
 				deltax = deltax + (float) xmove / (float) xsize * 0.1f;
 				deltay = deltay + (float) ymove / (float) ysize * 0.1f;
-				rotx   = rotx   - (float) ymove / (float) ysize * 10f;
-				roty   = roty   + (float) xmove / (float) xsize * 10f;
-				if (SwingUtilities.isLeftMouseButton(arg0))   GL2Scene.setTranslate(deltax, deltay, 0f);
+				if (SwingUtilities.isLeftMouseButton(arg0))   GL2Scene.setRotate(vr, angle);
 				if (SwingUtilities.isMiddleMouseButton(arg0)) GL2Scene.setTranslate(deltax, deltay, 0f);
-				if (SwingUtilities.isRightMouseButton(arg0))  GL2Scene.setRotate(rotx, roty);
+				if (SwingUtilities.isRightMouseButton(arg0))  GL2Scene.setTranslate(deltax, deltay, 0f);
 			}
 			
 			

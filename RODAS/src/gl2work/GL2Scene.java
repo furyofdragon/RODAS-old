@@ -7,6 +7,8 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
+import vec3D.Vec3D;
+
 public class GL2Scene implements GLEventListener {
 	
 	private GLU glu;  // for the GL Utility
@@ -16,6 +18,8 @@ public class GL2Scene implements GLEventListener {
 	private static float deltaz;
 	private static float rotx;
 	private static float roty;
+	private static float rotz;
+	private static float angle;
 	
 	
 	   private float anglePyramid = 0;    // rotational angle in degree for pyramid
@@ -139,8 +143,7 @@ public class GL2Scene implements GLEventListener {
 		gl.glLoadIdentity();                 // reset the model-view matrix
 		gl.glTranslatef(0.5f, 0.0f, -6.0f);
 		gl.glTranslatef(deltax, deltay, 0f);
-		gl.glRotatef(rotx, 1, 0, 0);
-		gl.glRotatef(roty, 0, 1, 0);
+		gl.glRotatef(angle, rotx, roty, rotz);
 		if (deltaz == 0f) deltaz = 1f;
 		gl.glScalef(deltaz, deltaz, deltaz);
 				
@@ -154,7 +157,8 @@ public class GL2Scene implements GLEventListener {
 	      // ----- Render the Pyramid -----
 	      gl.glLoadIdentity();                 // reset the model-view matrix
 	      gl.glTranslatef(-1.6f, 0.0f, -6.0f); // translate left and into the screen
-	      gl.glRotatef(anglePyramid, -0.2f, 1.0f, 0.0f); // rotate about the y-axis
+	      //gl.glRotatef(anglePyramid, -0.2f, 1.0f, 0.0f); // rotate about the y-axis
+	      gl.glRotatef(angle, rotx, roty, rotz);
 	 
 	      gl.glBegin(GL.GL_TRIANGLES); // of the pyramid
 	 
@@ -250,8 +254,8 @@ public class GL2Scene implements GLEventListener {
 	
 	
 	private void update() {
-	      anglePyramid += speedPyramid;
-	      angleCube += speedCube;
+	      //anglePyramid += speedPyramid;
+	      //angleCube += speedCube;
 	}
 	
 	
@@ -261,9 +265,11 @@ public class GL2Scene implements GLEventListener {
 		GL2Scene.deltay = deltaz;
 	}
 	
-	public static void setRotate(float rotx, float roty) {
-		GL2Scene.rotx = rotx;
-		GL2Scene.roty = roty;
+	public static void setRotate(Vec3D vr, float angle) {
+		GL2Scene.rotx = vr.getX();
+		GL2Scene.roty = vr.getY();
+		GL2Scene.rotz = vr.getZ();
+		GL2Scene.angle = angle;
 	}
 	
 	public static void setScale(float deltaz) {
