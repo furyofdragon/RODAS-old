@@ -2,15 +2,20 @@ package vec3D;
 
 public class Vec3D {
 	
-	private float x;
-	private float y;
-	private float z;
-	private float length;
+	public float x;
+	public float y;
+	public float z;
 
 	public Vec3D(float x, float y, float z) {
 		this.x  = x;
 		this.y  = y;
 		this.z  = z;
+	}
+	
+	public Vec3D(float x, float y) {
+		this.x = x;
+		this.y = y;
+		this.z = 0;
 	}
 	
 	public Vec3D() {
@@ -44,11 +49,11 @@ public class Vec3D {
 	}
 	
 	public float length() {
-		return length = (float) Math.sqrt(x*x + y*y + z*z);
+		return (float) Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
 	}
 	
-	public Vec3D normalize(Vec3D v) {
-		float length = v.length;
+	public static Vec3D normalize(Vec3D v) {
+		float length = v.length();
 		Vec3D normalizedV = new Vec3D();
 		normalizedV.x = v.x / length;
 		normalizedV.y = v.y / length;
