@@ -65,14 +65,14 @@ public class Main {
 	private       Integer     lastXCursorPosition;
 	private       Integer     lastYCursorPosition;
 	private final ButtonGroup lfButtonGroup = new ButtonGroup();
-	private float             deltax = 0f;
-	private float             deltay = 0f;
-	private float             deltaz = 0f;
+	private float             deltax = 0;
+	private float             deltay = 0;
+	private float             deltaz = 0;
+	private float             scalez = 1;
 	
-	private boolean dragging;		// is a drag operation in progress?
-	private Vec3D   va, vb;			// for arcball rotation
-	private float   angle;
-	private Vec3D   axis;
+	private Vec3D va, vb;			// for arcball rotation
+	private float angle = 0;
+	private Vec3D axis;
 
 	/**
 	 * Launch the application.
@@ -252,24 +252,16 @@ public class Main {
 		mainWindow.getContentPane().add(canvas, BorderLayout.CENTER);
 		canvas.addGLEventListener(new GL2Scene());
 		canvas.addMouseListener(new MouseAdapter() {
-			
-			
 			/**
 			 * Called when the user presses a mouse button on the display.
 			 */
 			public void mousePressed(MouseEvent evt) {
-				if (dragging) {
-					return;  // don't start a new drag while one is already in progress
-				}
-				int x = evt.getX();
-				int y = evt.getY();
-				// TODO: respond to mouse click at (x,y)
-				dragging = true;  // might not always be correct!
-				
+				lastXCursorPosition = evt.getX();
+				lastYCursorPosition = evt.getY();
 				// Convert the screen coordinates (in pixels) to camera coordinates (in [-1, 1])
 				// and reverse y coordinates
-				float ax = 2* (float)x/ (float)canvas.getWidth () - 1f;
-				float ay = 2* (float)y/ (float)canvas.getHeight() - 1f;
+				float ax = 2* (float)lastXCursorPosition/ (float)canvas.getWidth () - 1f;
+				float ay = 2* (float)lastYCursorPosition/ (float)canvas.getHeight() - 1f;
 				ay = - ay;
 				va = new Vec3D(ax, ay);
 				float squared = ax*ax + ay*ay;
@@ -286,19 +278,18 @@ public class Main {
 			}
 			
 			public void mouseDragged(MouseEvent arg0) {
-				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
 				xCursorPosition = arg0.getX();
 				yCursorPosition = arg0.getY();
-				if (! dragging) {
-					return;
-				}
+				int xsize = canvas.getWidth();
+				int ysize = canvas.getHeight();
+				textField.setText("Cursor position: x = " + Integer.toString(xCursorPosition) + " ; y = " + Integer.toString(yCursorPosition));
 				// Convert the screen coordinates (in pixels) to camera coordinates (in [-1, 1])
 				// and reverse y coordinates
-				float ax = 2* (float)xCursorPosition/ (float)canvas.getWidth () - 1f;
-				float ay = 2* (float)yCursorPosition/ (float)canvas.getHeight() - 1f;
-				ay = - ay;
-				vb = new Vec3D(ax, ay);
-				float squared = ax*ax + ay*ay;
+				float bx = 2* (float)xCursorPosition/ (float)xsize - 1f;
+				float by = 2* (float)yCursorPosition/ (float)ysize - 1f;
+				by = - by;
+				vb = new Vec3D(bx, by);
+				float squared = bx*bx + by*by;
 				if (squared <= 1) {
 					vb.z = (float) Math.sqrt(1f - squared);	// Pythagorene
 				}else {
@@ -308,14 +299,13 @@ public class Main {
 				angle = (float) (180f/Math.PI * Math.acos(Math.min(1f, Vec3D.scalarProduce(va, vb))));
 				axis  = Vec3D.vectorProduce(va, vb);
 				
-				
-				
-				int xmove = arg0.getX() - xCursorPosition;
-				int ymove = arg0.getY() - yCursorPosition;
-				int xsize = canvas.getWidth();
-				int ysize = canvas.getHeight();
-				deltax = deltax + (float) xmove / (float) xsize * 0.1f;
-				deltay = deltay + (float) ymove / (float) ysize * 0.1f;
+				float ax = 2* (float)lastXCursorPosition/ (float)canvas.getWidth () - 1f;
+				float ay = 2* (float)lastYCursorPosition/ (float)canvas.getHeight() - 1f;
+				ay = - ay;
+				float xmove = bx - ax;
+				float ymove = by - ay;
+				deltax = deltax + xmove * 0.1f;
+				deltay = deltay + ymove * 0.1f;
 				if (SwingUtilities.isLeftMouseButton(arg0))   GL2Scene.setRotate(axis, angle);
 				if (SwingUtilities.isMiddleMouseButton(arg0)) GL2Scene.setTranslate(deltax, deltay, 0f);
 				if (SwingUtilities.isRightMouseButton(arg0))  GL2Scene.setTranslate(deltax, deltay, 0f);
@@ -327,8 +317,12 @@ public class Main {
 		});
 		canvas.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
-				deltaz = deltaz + arg0.getWheelRotation()*0.1f;
-				GL2Scene.setScale(deltaz);
+				scalez = scalez + arg0.getWheelRotation()*0.01f;
+				// prevent inversion
+				if (scalez < 0) {
+					scalez = 0;
+				}
+				GL2Scene.setScale(scalez);
 			}
 		});
 		

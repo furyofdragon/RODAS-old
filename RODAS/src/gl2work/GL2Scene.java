@@ -19,9 +19,7 @@ public class GL2Scene implements GLEventListener {
 	private static float deltax;
 	private static float deltay;
 	private static float deltaz;
-	private static float rotx;
-	private static float roty;
-	private static float rotz;
+	private static float scalez;
 	
 	private static float angle;
 	private static Vec3D axis;
@@ -40,13 +38,20 @@ public class GL2Scene implements GLEventListener {
 		gl.glLoadIdentity();				// reset the model-view matrix
 		gl.glOrtho(-1,1,-1,1,-2,2);
 		
+		if (angle != 0) {
+			gl.glRotatef(angle, axis.x, axis.y, axis.z);
+		}
+		if ((deltax !=0)|(deltay != 0)|(deltaz != 0)) {
+			gl.glTranslatef(deltax, deltay, deltaz);
+		}
+		if (scalez != 1) {
+			gl.glScalef(scalez, scalez, scalez);
+		}
+		
 		gl.glMatrixMode(GL2.GL_MODELVIEW);
 
 		gl.glLoadIdentity();             // Set up model view transform.
 		
-		if (angle != 0) {
-			gl.glRotatef(angle, axis.x, axis.y, axis.z);
-		}
 		
 		/* colors
 		glColor3f(0.0, 0.0, 0.0);           black
@@ -139,6 +144,7 @@ public class GL2Scene implements GLEventListener {
 		// Setup perspective projection, with aspect ratio matches viewport
 		gl.glMatrixMode(GL2.GL_PROJECTION);				// choose projection matrix
 		gl.glLoadIdentity();							// reset projection matrix
+		gl.glScalef(scalez, scalez, scalez);
 		glu.gluPerspective(45.0, aspect, 0.01, 100.0); 	// fovy, aspect, zNear, zFar
 		
 		//gl.glViewport(0, 640, 0, 480);
@@ -173,8 +179,8 @@ public class GL2Scene implements GLEventListener {
 		GL2Scene.angle = angle;
 	}
 	
-	public static void setScale(float deltaz) {
-		GL2Scene.deltaz = deltaz;
+	public static void setScale(float scalez) {
+		GL2Scene.scalez = scalez;
 	}
 
 }
