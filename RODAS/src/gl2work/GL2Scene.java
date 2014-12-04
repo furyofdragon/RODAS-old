@@ -7,11 +7,14 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.fixedfunc.GLMatrixFunc;
 import javax.media.opengl.glu.GLU;
 
+import com.jogamp.opengl.util.gl2.GLUT;
+
 import vec3D.Vec3D;
 
 public class GL2Scene implements GLEventListener {
 	
-	private GLU glu;  // for the GL Utility
+	private GLU  glu  = new GLU();		// get GL Utilities
+	private GLUT glut = new GLUT();		// for drawing the teapot
 	
 	private static float deltax;
 	private static float deltay;
@@ -19,20 +22,82 @@ public class GL2Scene implements GLEventListener {
 	private static float rotx;
 	private static float roty;
 	private static float rotz;
+	
 	private static float angle;
+	private static Vec3D axis;
 	
-	
-	   private float anglePyramid = 0;    // rotational angle in degree for pyramid
-	   private float angleCube = 0;       // rotational angle in degree for cube
-	   private float speedPyramid = 2.0f; // rotational speed for pyramid
-	   private float speedCube = 1.5f;   // rotational speed for cube
 
 	/**
 	* Called back by the animator to perform rendering.
 	*/
 	public void display(GLAutoDrawable drawable) {
-		render(drawable);
-		update();
+		
+		GL2 gl = drawable.getGL().getGL2();								// get the OpenGL graphics context
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	// clear color and depth buffers
+		
+		gl.glMatrixMode(GL2.GL_PROJECTION);  // TODO: Set up a better projection?
+		
+		gl.glLoadIdentity();				// reset the model-view matrix
+		gl.glOrtho(-1,1,-1,1,-2,2);
+		
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
+
+		gl.glLoadIdentity();             // Set up model view transform.
+		
+		if (angle != 0) {
+			gl.glRotatef(angle, axis.x, axis.y, axis.z);
+		}
+		
+		/* colors
+		glColor3f(0.0, 0.0, 0.0);           black
+		glColor3f(1.0, 0.0, 0.0);           red
+		glColor3f(0.0, 1.0, 0.0);           green
+		glColor3f(1.0, 1.0, 0.0);           yellow
+		glColor3f(0.0, 0.0, 1.0);           blue
+		glColor3f(1.0, 0.0, 1.0);           magenta
+		glColor3f(0.0, 1.0, 1.0);           cyan
+		glColor3f(1.0, 1.0, 1.0);           white
+		 * 
+		 */
+		
+		
+		/*
+		 * coordinate system
+		 * X - from left to right
+		 * Y - from bottom to up
+		 * Z - from screen to us
+		 */
+		
+		
+		// ----- OpenGL rendering code here
+		
+		//gl.glRotatef(angle, 1, 1, 1);
+		//gl.glTranslatef(deltax, deltay, 0);
+		//gl.glRotatef(rotx, 1, 0, 0);
+		//gl.glRotatef(roty, 0, 1, 0);
+		
+		//the gluLookAt() method, which takes three 3D coordinates:
+		//(0, 0, distance): Where we are standing ("eye")
+		//(0, 0, 0): Where we are looking at ("at"): Directly at the center of the coordinate system.
+		//(0, 1, 0): Where our head points into the sky ("up"): Directly up, along the Y coordinate
+		//(remember that Y is counted as if on a graph, not like in an image manipulation program).
+		
+		gl.glColor3f(1, 1, 1);
+		glut.glutWireTeapot(0.6);
+		
+		// axes
+		gl.glBegin(GL.GL_LINES);
+			gl.glLineWidth(1);
+			gl.glColor3f(1, 0, 0);		gl.glVertex3f(0, 0, 0);		gl.glVertex3f(1, 0, 0);
+			gl.glColor3f(0, 1, 0);		gl.glVertex3f(0, 0, 0);		gl.glVertex3f(0, 1, 0);
+			gl.glColor3f(0, 0, 1);		gl.glVertex3f(0, 0, 0);		gl.glVertex3f(0, 0, 1);
+		gl.glEnd();
+		
+		// axes names
+		gl.glColor3f(1, 0, 0);	gl.glRasterPos3f(1, 0, 0);	glut.glutBitmapString(GLUT.BITMAP_9_BY_15, "X");
+		gl.glColor3f(0, 1, 0);	gl.glRasterPos3f(0, 1, 0);	glut.glutBitmapString(GLUT.BITMAP_9_BY_15, "Y");
+		gl.glColor3f(0, 0, 1);	gl.glRasterPos3f(0, 0, 1);	glut.glutBitmapString(GLUT.BITMAP_9_BY_15, "Z");
+		
 	}
 
 	/**
@@ -48,7 +113,6 @@ public class GL2Scene implements GLEventListener {
 	*/
 	public void init(GLAutoDrawable drawable) {
 		GL2 gl = drawable.getGL().getGL2();								// get the OpenGL graphics context
-		glu = new GLU();												// get GL Utilities
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);						// set background (clear) color -- black
 		gl.glClearDepth(1.0f);											// set clear depth value to farthest
 		gl.glEnable(GL2.GL_DEPTH_TEST);									// enables depth testing
@@ -98,167 +162,6 @@ public class GL2Scene implements GLEventListener {
 	
 	
 	
-	private void render(GLAutoDrawable drawable) {
-		
-		GL2 gl = drawable.getGL().getGL2();								// get the OpenGL graphics context
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	// clear color and depth buffers
-		gl.glLoadIdentity();											// reset the model-view matrix
-		
-		/* colors
-		glColor3f(0.0, 0.0, 0.0);           black
-		glColor3f(1.0, 0.0, 0.0);           red
-		glColor3f(0.0, 1.0, 0.0);           green
-		glColor3f(1.0, 1.0, 0.0);           yellow
-		glColor3f(0.0, 0.0, 1.0);           blue
-		glColor3f(1.0, 0.0, 1.0);           magenta
-		glColor3f(0.0, 1.0, 1.0);           cyan
-		glColor3f(1.0, 1.0, 1.0);           white
-		 * 
-		 */
-		
-		
-		/*
-		 * coordinate system
-		 * X - from left to right
-		 * Y - from bottom to up
-		 * Z - from screen to us
-		 */
-		
-		
-		// ----- OpenGL rendering code here
-		
-		//gl.glRotatef(angle, 1, 1, 1);
-		//gl.glTranslatef(deltax, deltay, 0);
-		//gl.glRotatef(rotx, 1, 0, 0);
-		//gl.glRotatef(roty, 0, 1, 0);
-		
-		//the gluLookAt() method, which takes three 3D coordinates:
-		//(0, 0, distance): Where we are standing ("eye")
-		//(0, 0, 0): Where we are looking at ("at"): Directly at the center of the coordinate system.
-		//(0, 1, 0): Where our head points into the sky ("up"): Directly up, along the Y coordinate
-		//(remember that Y is counted as if on a graph, not like in an image manipulation program).
-		
-		
-		// ----- Render my triangle -----
-		gl.glLoadIdentity();                 // reset the model-view matrix
-		gl.glTranslatef(0.5f, 0.0f, -6.0f);
-		gl.glTranslatef(deltax, deltay, 0f);
-		gl.glRotatef(angle, rotx, roty, rotz);
-		if (deltaz == 0f) deltaz = 1f;
-		gl.glScalef(deltaz, deltaz, deltaz);
-				
-		gl.glBegin(GL.GL_TRIANGLES);
-			gl.glColor3f(1, 0, 0);		gl.glVertex3d(-1, 0, 0);
-			gl.glColor3f(0, 1, 0);		gl.glVertex3d( 1, 0, 0);
-			gl.glColor3f(0, 0, 1);		gl.glVertex3d( 0, 1, 0);
-		gl.glEnd();
-		
-		
-	      // ----- Render the Pyramid -----
-	      gl.glLoadIdentity();                 // reset the model-view matrix
-	      gl.glTranslatef(-1.6f, 0.0f, -6.0f); // translate left and into the screen
-	      //gl.glRotatef(anglePyramid, -0.2f, 1.0f, 0.0f); // rotate about the y-axis
-	      gl.glRotatef(angle, rotx, roty, rotz);
-	 
-	      gl.glBegin(GL.GL_TRIANGLES); // of the pyramid
-	 
-	      // Font-face triangle
-	      gl.glColor3f(1.0f, 0.0f, 0.0f); // Red
-	      gl.glVertex3f(0.0f, 1.0f, 0.0f);
-	      gl.glColor3f(0.0f, 1.0f, 0.0f); // Green
-	      gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-	      gl.glColor3f(0.0f, 0.0f, 1.0f); // Blue
-	      gl.glVertex3f(1.0f, -1.0f, 1.0f);
-	 
-	      // Right-face triangle
-	      gl.glColor3f(1.0f, 0.0f, 0.0f); // Red
-	      gl.glVertex3f(0.0f, 1.0f, 0.0f);
-	      gl.glColor3f(0.0f, 0.0f, 1.0f); // Blue
-	      gl.glVertex3f(1.0f, -1.0f, 1.0f);
-	      gl.glColor3f(0.0f, 1.0f, 0.0f); // Green
-	      gl.glVertex3f(1.0f, -1.0f, -1.0f);
-	 
-	      // Back-face triangle
-	      gl.glColor3f(1.0f, 0.0f, 0.0f); // Red
-	      gl.glVertex3f(0.0f, 1.0f, 0.0f);
-	      gl.glColor3f(0.0f, 1.0f, 0.0f); // Green
-	      gl.glVertex3f(1.0f, -1.0f, -1.0f);
-	      gl.glColor3f(0.0f, 0.0f, 1.0f); // Blue
-	      gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-	 
-	      // Left-face triangle
-	      gl.glColor3f(1.0f, 0.0f, 0.0f); // Red
-	      gl.glVertex3f(0.0f, 1.0f, 0.0f);
-	      gl.glColor3f(0.0f, 0.0f, 1.0f); // Blue
-	      gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-	      gl.glColor3f(0.0f, 1.0f, 0.0f); // Green
-	      gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-	 
-	      gl.glEnd(); // of the pyramid
-	 
-	      // ----- Render the Color Cube -----
-	      gl.glLoadIdentity();                // reset the current model-view matrix
-	      gl.glTranslatef(1.6f, 0.0f, -7.0f); // translate right and into the screen
-	      //gl.glRotatef(angleCube, 1.0f, 1.0f, 1.0f); // rotate about the x, y and z-axes
-	      gl.glRotatef(angleCube, 0f, 0f, 1.0f);
-	 
-	      gl.glBegin(GL2.GL_QUADS); // of the color cube
-	 
-	      // Top-face
-	      gl.glColor3f(0.0f, 1.0f, 0.0f); // green
-	      gl.glVertex3f(1.0f, 1.0f, -1.0f);
-	      gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-	      gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-	      gl.glVertex3f(1.0f, 1.0f, 1.0f);
-	 
-	      // Bottom-face
-	      gl.glColor3f(1.0f, 0.5f, 0.0f); // orange
-	      gl.glVertex3f(1.0f, -1.0f, 1.0f);
-	      gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-	      gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-	      gl.glVertex3f(1.0f, -1.0f, -1.0f);
-	 
-	      // Front-face
-	      gl.glColor3f(1.0f, 0.0f, 0.0f); // red
-	      gl.glVertex3f(1.0f, 1.0f, 1.0f);
-	      gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-	      gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-	      gl.glVertex3f(1.0f, -1.0f, 1.0f);
-	 
-	      // Back-face
-	      gl.glColor3f(1.0f, 1.0f, 0.0f); // yellow
-	      gl.glVertex3f(1.0f, -1.0f, -1.0f);
-	      gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-	      gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-	      gl.glVertex3f(1.0f, 1.0f, -1.0f);
-	 
-	      // Left-face
-	      gl.glColor3f(0.0f, 0.0f, 1.0f); // blue
-	      gl.glVertex3f(-1.0f, 1.0f, 1.0f);
-	      gl.glVertex3f(-1.0f, 1.0f, -1.0f);
-	      gl.glVertex3f(-1.0f, -1.0f, -1.0f);
-	      gl.glVertex3f(-1.0f, -1.0f, 1.0f);
-	 
-	      // Right-face
-	      gl.glColor3f(1.0f, 0.0f, 1.0f); // magenta
-	      gl.glVertex3f(1.0f, 1.0f, -1.0f);
-	      gl.glVertex3f(1.0f, 1.0f, 1.0f);
-	      gl.glVertex3f(1.0f, -1.0f, 1.0f);
-	      gl.glVertex3f(1.0f, -1.0f, -1.0f);
-	 
-	      gl.glEnd(); // of the color cube
-		
-		
-	}
-	
-	
-	
-	private void update() {
-	      //anglePyramid += speedPyramid;
-	      //angleCube += speedCube;
-	}
-	
-	
 	public static void setTranslate(float deltax, float deltay, float deltaz) {
 		GL2Scene.deltax = deltax;
 		GL2Scene.deltay = deltay;
@@ -266,9 +169,7 @@ public class GL2Scene implements GLEventListener {
 	}
 	
 	public static void setRotate(Vec3D vr, float angle) {
-		GL2Scene.rotx = vr.getX();
-		GL2Scene.roty = vr.getY();
-		GL2Scene.rotz = vr.getZ();
+		GL2Scene.axis  = vr;
 		GL2Scene.angle = angle;
 	}
 	

@@ -68,6 +68,11 @@ public class Main {
 	private float             deltax = 0f;
 	private float             deltay = 0f;
 	private float             deltaz = 0f;
+	
+	private boolean dragging;		// is a drag operation in progress?
+	private Vec3D   va, vb;			// for arcball rotation
+	private float   angle;
+	private Vec3D   axis;
 
 	/**
 	 * Launch the application.
@@ -247,16 +252,35 @@ public class Main {
 		mainWindow.getContentPane().add(canvas, BorderLayout.CENTER);
 		canvas.addGLEventListener(new GL2Scene());
 		canvas.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent arg0) {
-				xCursorPosition = arg0.getX();
-				yCursorPosition = arg0.getY();
-				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
-				lastXCursorPosition = xCursorPosition;
-				lastYCursorPosition = yCursorPosition;
-				//http://en.wikibooks.org/wiki/OpenGL_Programming/Modern_OpenGL_Tutorial_Arcball
+			
+			
+			/**
+			 * Called when the user presses a mouse button on the display.
+			 */
+			public void mousePressed(MouseEvent evt) {
+				if (dragging) {
+					return;  // don't start a new drag while one is already in progress
+				}
+				int x = evt.getX();
+				int y = evt.getY();
+				// TODO: respond to mouse click at (x,y)
+				dragging = true;  // might not always be correct!
+				
+				// Convert the screen coordinates (in pixels) to camera coordinates (in [-1, 1])
+				// and reverse y coordinates
+				float ax = 2* (float)x/ (float)canvas.getWidth () - 1f;
+				float ay = 2* (float)y/ (float)canvas.getHeight() - 1f;
+				ay = - ay;
+				va = new Vec3D(ax, ay);
+				float squared = ax*ax + ay*ay;
+				if (squared <= 1) {
+					va.z = (float) Math.sqrt(1f - squared);	// Pythagorene
+				}else {
+					va = Vec3D.normalize(va);				// nearest point
+				}
 			}
 		});
-		canvas.addMouseMotionListener(new MouseMotionAdapter() {
+		canvas.addMouseMotionListener(new MouseMotionAdapter() {			
 			public void mouseMoved(MouseEvent arg0) {
 				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
 			}
@@ -265,19 +289,26 @@ public class Main {
 				textField.setText("Cursor position: x = " + Integer.toString(arg0.getX()) + " ; y = " + Integer.toString(arg0.getY()));
 				xCursorPosition = arg0.getX();
 				yCursorPosition = arg0.getY();
-				float a = lastXCursorPosition/canvas.getWidth();
-				float b = lastYCursorPosition/canvas.getHeight();
-				float c = (float) Math.sqrt(1 - a*a - b*b);
-				Vec3D va = new Vec3D(a, b, c);
-				//va = va.normalize(va);
-				a = xCursorPosition/canvas.getWidth();
-				b = yCursorPosition/canvas.getHeight();
-				c = (float) Math.sqrt(1 - a*a - b*b);
-				Vec3D vb = new Vec3D(a, b, c);
-				//vb = vb.normalize(vb);
-				Vec3D vr = Vec3D.vectorProduce(va, vb);
-				vr = vr.normalize(vr);
-				float angle = (float) Math.acos(Vec3D.scalarProduce(va, vb))*100;
+				if (! dragging) {
+					return;
+				}
+				// Convert the screen coordinates (in pixels) to camera coordinates (in [-1, 1])
+				// and reverse y coordinates
+				float ax = 2* (float)xCursorPosition/ (float)canvas.getWidth () - 1f;
+				float ay = 2* (float)yCursorPosition/ (float)canvas.getHeight() - 1f;
+				ay = - ay;
+				vb = new Vec3D(ax, ay);
+				float squared = ax*ax + ay*ay;
+				if (squared <= 1) {
+					vb.z = (float) Math.sqrt(1f - squared);	// Pythagorene
+				}else {
+					vb = Vec3D.normalize(vb);				// nearest point
+				}
+				// Compute the angle and axis
+				angle = (float) (180f/Math.PI * Math.acos(Math.min(1f, Vec3D.scalarProduce(va, vb))));
+				axis  = Vec3D.vectorProduce(va, vb);
+				
+				
 				
 				int xmove = arg0.getX() - xCursorPosition;
 				int ymove = arg0.getY() - yCursorPosition;
@@ -285,9 +316,11 @@ public class Main {
 				int ysize = canvas.getHeight();
 				deltax = deltax + (float) xmove / (float) xsize * 0.1f;
 				deltay = deltay + (float) ymove / (float) ysize * 0.1f;
-				if (SwingUtilities.isLeftMouseButton(arg0))   GL2Scene.setRotate(vr, angle);
+				if (SwingUtilities.isLeftMouseButton(arg0))   GL2Scene.setRotate(axis, angle);
 				if (SwingUtilities.isMiddleMouseButton(arg0)) GL2Scene.setTranslate(deltax, deltay, 0f);
 				if (SwingUtilities.isRightMouseButton(arg0))  GL2Scene.setTranslate(deltax, deltay, 0f);
+				
+				canvas.repaint();
 			}
 			
 			
