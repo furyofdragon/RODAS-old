@@ -22,7 +22,7 @@ public class GL2Scene implements GLEventListener {
 	private static float scalez = 1;
 	
 	private static float angle = 0;
-	private static Vec3D axis;
+	private static Vec3D axis = new Vec3D();
 	
 
 	/**
@@ -33,7 +33,7 @@ public class GL2Scene implements GLEventListener {
 		GL2 gl = drawable.getGL().getGL2();								// get the OpenGL graphics context
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);	// clear color and depth buffers
 		
-		gl.glMatrixMode(GL2.GL_PROJECTION);  // TODO: Set up a better projection?
+		gl.glMatrixMode(GL2.GL_PROJECTION);
 		
 		gl.glLoadIdentity();				// reset the model-view matrix
 		gl.glOrtho(-1,1,-1,1,-2,2);
