@@ -16,12 +16,12 @@ public class GL2Scene implements GLEventListener {
 	private GLU  glu  = new GLU();		// get GL Utilities
 	private GLUT glut = new GLUT();		// for drawing the teapot
 	
-	private static float deltax;
-	private static float deltay;
-	private static float deltaz;
-	private static float scalez;
+	private static float deltax = 0;
+	private static float deltay = 0;
+	private static float deltaz = 0;
+	private static float scalez = 1;
 	
-	private static float angle;
+	private static float angle = 0;
 	private static Vec3D axis;
 	
 
@@ -144,9 +144,8 @@ public class GL2Scene implements GLEventListener {
 		// Setup perspective projection, with aspect ratio matches viewport
 		gl.glMatrixMode(GL2.GL_PROJECTION);				// choose projection matrix
 		gl.glLoadIdentity();							// reset projection matrix
-		gl.glScalef(scalez, scalez, scalez);
-		glu.gluPerspective(45.0, aspect, 0.01, 100.0); 	// fovy, aspect, zNear, zFar
-		
+		//glu.gluPerspective(45.0, aspect, 0.01, 100.0); 	// fovy, aspect, zNear, zFar
+		gl.glOrtho(-1,1,-1,1,-2,2);
 		//gl.glViewport(0, 640, 0, 480);
 		//glu.gluOrtho2D( 0, 1, 0, 1);
 		
