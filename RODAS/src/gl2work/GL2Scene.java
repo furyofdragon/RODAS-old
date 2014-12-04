@@ -146,19 +146,12 @@ public class GL2Scene implements GLEventListener {
 		gl.glLoadIdentity();							// reset projection matrix
 		//glu.gluPerspective(45.0, aspect, 0.01, 100.0); 	// fovy, aspect, zNear, zFar
 		gl.glOrtho(-1,1,-1,1,-2,2);
-		//gl.glViewport(0, 640, 0, 480);
-		//glu.gluOrtho2D( 0, 1, 0, 1);
-		
 		
 		glu.gluLookAt(
 		          0, 0, 10, 	// eye
 		           0, 0, 0, 	// at
 		           0, 1, 0 		// up
 		           );
-		
-		// GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble near, GLdouble far
-		// GLdouble left, GLdouble right, GLdouble bottom, GLdouble top
-		
 		
 		// Enable the model-view transform
 		gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
