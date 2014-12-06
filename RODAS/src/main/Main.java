@@ -303,9 +303,10 @@ public class Main {
 				float ay = 2* (float)lastYCursorPosition/ (float)canvas.getHeight() - 1f;
 				ay = - ay;
 				float xmove = bx - ax;
-				float ymove = by - ay;
-				deltax = deltax + xmove * 0.1f;
-				deltay = deltay + ymove * 0.1f;
+				float ymove = -by + ay;
+				deltax = deltax + xmove * 0.02f;
+				deltay = deltay + ymove * 0.02f;
+				textField.setText("deltax = " + Float.toString(deltax) + " ; deltay = " + Float.toString(deltay));
 				if (SwingUtilities.isLeftMouseButton(arg0))   GL2Scene.setRotate(axis, angle);
 				if (SwingUtilities.isMiddleMouseButton(arg0)) GL2Scene.setTranslate(deltax, deltay, 0f);
 				if (SwingUtilities.isRightMouseButton(arg0))  GL2Scene.setTranslate(deltax, deltay, 0f);
